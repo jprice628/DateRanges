@@ -23,6 +23,19 @@ namespace Tests
         }
 
         [TestMethod]
+        public void DateRange_Full_InstantiatesFullDateRange()
+        {
+            // Act
+            var full = DateRange.Full();
+
+            // Assert
+            Assert.AreEqual(
+                new DateRange(DateTime.MinValue, DateTime.MaxValue),
+                full
+                );
+        }
+
+        [TestMethod]
         public void DateRange_Ctor_StripsTimeInfo()
         {
             // Act
@@ -127,6 +140,45 @@ namespace Tests
 
             // Assert
             Assert.AreEqual("{\"StartDate\":\"2019-02-10\",\"EndDate\":\"2019-10-15\"}", str);
+        }
+
+        [TestMethod]
+        public void DateRange_IsEmpty_ReturnsTrueWhenEmpty()
+        {
+            // Arrange
+            var dr = new DateRange(new DateTime(2019, 2, 10), new DateTime(2019, 2, 10));
+
+            // Act
+            var isEmpty = dr.IsEmpty();
+
+            // Assert
+            Assert.IsTrue(isEmpty);
+        }
+
+        [TestMethod]
+        public void DateRange_IsEmpty_ReturnsFalseWhenNotEmpty()
+        {
+            // Arrange
+            var dr = new DateRange(new DateTime(2019, 2, 10), new DateTime(2019, 2, 20));
+
+            // Act
+            var isEmpty = dr.IsEmpty();
+
+            // Assert
+            Assert.IsFalse(isEmpty);
+        }
+
+        [TestMethod]
+        public void DateRange_Length_ReturnsLengthOfDateRange()
+        {
+            // Arrange
+            var dr = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 2, 10));
+
+            // Act
+            var length = dr.Length();
+
+            // Assert
+            Assert.AreEqual(new TimeSpan(9, 0, 0, 0), length);
         }
     }
 }
