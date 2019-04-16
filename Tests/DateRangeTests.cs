@@ -33,11 +33,11 @@ namespace Tests
 
             // Assert
             Assert.AreEqual(
-                new DateTime(2019, 1, 1, 0, 0, 0, DateTimeKind.Unspecified), 
+                new DateTime(2019, 1, 1, 0, 0, 0, DateTimeKind.Unspecified),
                 dr.StartDate
                 );
             Assert.AreEqual(
-                new DateTime(2019, 6, 1, 0, 0, 0, DateTimeKind.Unspecified), 
+                new DateTime(2019, 6, 1, 0, 0, 0, DateTimeKind.Unspecified),
                 dr.EndDate
                 );
         }
@@ -114,6 +114,19 @@ namespace Tests
 
             // Assert
             Assert.IsTrue(areEqual);
+        }
+
+        [TestMethod]
+        public void DateRange_ToString_ReturnsString()
+        {
+            // Arrange
+            var dr1 = new DateRange(new DateTime(2019, 2, 10), new DateTime(2019, 10, 15));
+
+            // Act
+            var str = dr1.ToString();
+
+            // Assert
+            Assert.AreEqual("{\"StartDate\":\"2019-02-10\",\"EndDate\":\"2019-10-15\"}", str);
         }
     }
 }

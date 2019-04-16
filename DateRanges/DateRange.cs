@@ -31,7 +31,7 @@ namespace DateRanges
             EndDate = internalEndDate;
         }
 
-        public static bool operator==(DateRange a, DateRange b)
+        public static bool operator ==(DateRange a, DateRange b)
         {
             return a.Equals(b);
         }
@@ -39,6 +39,12 @@ namespace DateRanges
         public static bool operator !=(DateRange a, DateRange b)
         {
             return !a.Equals(b);
+        }
+
+        public override string ToString()
+        {
+            const string Format = "yyyy-MM-dd";
+            return $"{{\"StartDate\":\"{StartDate.ToString(Format)}\",\"EndDate\":\"{EndDate.ToString(Format)}\"}}";
         }
     }
 }
