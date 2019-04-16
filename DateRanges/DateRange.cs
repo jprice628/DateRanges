@@ -40,10 +40,7 @@ namespace DateRanges
         /// DateTime.MinValue.Date and the end date is equal to DateTime.MaxValue.Date.
         /// </summary>
         /// <returns>A DateRange value.</returns>
-        public static DateRange Full()
-        {
-            return new DateRange(DateTime.MinValue, DateTime.MaxValue);
-        }
+        public static DateRange Full() => new DateRange(DateTime.MinValue, DateTime.MaxValue);
 
         /// <summary>
         /// Indicates whether or not this DateRange value is empty, i.e. its 
@@ -51,20 +48,21 @@ namespace DateRanges
         /// of zero.
         /// </summary>
         /// <returns></returns>
-        public bool IsEmpty()
-        {
-            return StartDate == EndDate;
-        }
+        public bool IsEmpty() => StartDate == EndDate;
 
         /// <summary>
         /// Calculates the length of the DateRange. Note that the end date of 
         /// a DateRange is exclusive.
         /// </summary>
         /// <returns>A TimeSpan value.</returns>
-        public TimeSpan Length()
-        {
-            return EndDate - StartDate;
-        }
+        public TimeSpan Length() => EndDate - StartDate;
+
+        /// <summary>
+        /// Determines whether or not a date is contained within this DateRange.
+        /// </summary>
+        /// <param name="value">A DateTime value.</param>
+        /// <returns>True if the value is within this DateRange; otherwise, false.</returns>
+        public bool Contains(DateTime value) => value >= StartDate && value < EndDate;
 
         /// <summary>
         /// Compares this DateRange with another object for equality.
@@ -107,10 +105,7 @@ namespace DateRanges
         /// <param name="a">A DateRange value.</param>
         /// <param name="b">A DateRange value.</param>
         /// <returns>True when a and b are equal; otherwise, false.</returns>
-        public static bool operator ==(DateRange a, DateRange b)
-        {
-            return a.Equals(b);
-        }
+        public static bool operator ==(DateRange a, DateRange b) => a.Equals(b);
 
         /// <summary>
         /// Compares two DateRange values for inequality.
@@ -118,10 +113,7 @@ namespace DateRanges
         /// <param name="a">A DateRange value.</param>
         /// <param name="b">A DateRange value.</param>
         /// <returns>True when a and b are not equal; otherwise, false.</returns>
-        public static bool operator !=(DateRange a, DateRange b)
-        {
-            return !a.Equals(b);
-        }
+        public static bool operator !=(DateRange a, DateRange b) => !a.Equals(b);
 
         /// <summary>
         /// Returns a string representation of this DateRange value.

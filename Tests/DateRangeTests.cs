@@ -180,5 +180,57 @@ namespace Tests
             // Assert
             Assert.AreEqual(new TimeSpan(9, 0, 0, 0), length);
         }
+
+        [TestMethod]
+        public void DateRange_Contains_ReturnsTrueWhenDateWithinDateRange()
+        {
+            // Arrange            
+            var dr = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 2, 10));
+
+            // Act
+            var contains = dr.Contains(new DateTime(2019, 2, 5));
+
+            // Assert
+            Assert.IsTrue(contains);
+        }
+
+        [TestMethod]
+        public void DateRange_Contains_ReturnsFalseWhenDateOutsideDateRange()
+        {
+            // Arrange            
+            var dr = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 2, 10));
+
+            // Act
+            var contains = dr.Contains(new DateTime(2019, 2, 25));
+
+            // Assert
+            Assert.IsFalse(contains);
+        }
+
+        [TestMethod]
+        public void DateRange_Contains_ReturnsTrueWhenDateIsStartDate()
+        {
+            // Arrange            
+            var dr = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 2, 10));
+
+            // Act
+            var contains = dr.Contains(new DateTime(2019, 2, 1));
+
+            // Assert
+            Assert.IsTrue(contains);
+        }
+
+        [TestMethod]
+        public void DateRange_Contains_ReturnsFalseWhenDateIsEndDate()
+        {
+            // Arrange            
+            var dr = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 2, 10));
+
+            // Act
+            var contains = dr.Contains(new DateTime(2019, 2, 10));
+
+            // Assert
+            Assert.IsFalse(contains);
+        }
     }
 }
