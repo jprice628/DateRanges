@@ -25,9 +25,8 @@ namespace DateRanges
         /// <exception cref="ArgumentOutOfRangeException">Thrown when startDate is greater than endDate.</exception>
         public DateRange(DateTime startDate, DateTime endDate)
         {
-            // TODO: Use Date.NewDate(...)
-            var internalStartDate = DateTime.SpecifyKind(startDate.Date, DateTimeKind.Unspecified);
-            var internalEndDate = DateTime.SpecifyKind(endDate.Date, DateTimeKind.Unspecified);
+            var internalStartDate = Date.NewDate(startDate);
+            var internalEndDate = Date.NewDate(endDate);
 
             if (internalStartDate > internalEndDate)
             {
@@ -45,8 +44,7 @@ namespace DateRanges
         /// </summary>
         /// <returns>A DateRange value.</returns>
 
-        // TODO: Use Date.MinValue and Date.MaxValue.
-        public static DateRange Full() => new DateRange(DateTime.MinValue, DateTime.MaxValue);
+        public static DateRange Full() => new DateRange(Date.MinValue, Date.MaxValue);
 
         /// <summary>
         /// Indicates whether or not this DateRange value is empty, i.e. its 
@@ -54,7 +52,7 @@ namespace DateRanges
         /// of zero.
         /// </summary>
         /// <returns></returns>
-        public bool IsEmpty() => StartDate == EndDate;
+        public bool IsEmpty() => Date.AreEqual(StartDate, EndDate);
 
         /// <summary>
         /// Calculates the length of the DateRange. Note that the end date of 
@@ -89,9 +87,8 @@ namespace DateRanges
         /// <returns>True when this equals value; otherwise, false.</returns>
         public bool Equals(DateRange value)
         {
-            // TODO: Use Date.Equals(...);
-            return StartDate == value.StartDate &&
-                   EndDate == value.EndDate;
+            return Date.AreEqual(StartDate, value.StartDate) &&
+                Date.AreEqual(EndDate, value.EndDate);
         }
 
         /// <summary>
@@ -128,6 +125,7 @@ namespace DateRanges
         /// <returns>A string representation of this DateRange value</returns>
         public override string ToString()
         {
+            // TODO: use DateTimeExtensions.ToDateString()
             const string Format = "yyyy-MM-dd";
             return $"{{\"StartDate\":\"{StartDate.ToString(Format)}\",\"EndDate\":\"{EndDate.ToString(Format)}\"}}";
         }
