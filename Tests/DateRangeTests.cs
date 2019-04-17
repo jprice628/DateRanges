@@ -139,7 +139,7 @@ namespace Tests
             var str = dr1.ToString();
 
             // Assert
-            Assert.AreEqual("{\"StartDate\":\"2019-02-10\",\"EndDate\":\"2019-10-15\"}", str);
+            Assert.AreEqual("2019-02-10 to 2019-10-15", str);
         }
 
         [TestMethod]

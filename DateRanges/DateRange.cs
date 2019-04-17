@@ -125,9 +125,7 @@ namespace DateRanges
         /// <returns>A string representation of this DateRange value</returns>
         public override string ToString()
         {
-            // TODO: use DateTimeExtensions.ToDateString()
-            const string Format = "yyyy-MM-dd";
-            return $"{{\"StartDate\":\"{StartDate.ToString(Format)}\",\"EndDate\":\"{EndDate.ToString(Format)}\"}}";
+            return $"{StartDate.ToYMDString()} to {EndDate.ToYMDString()}";
         }
     }
 }
