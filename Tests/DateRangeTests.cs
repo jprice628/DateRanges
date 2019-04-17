@@ -64,7 +64,7 @@ namespace Tests
             var dt2 = new DateTime(2019, 1, 1);
 
             // Act
-            var dr = new DateRange(dt1, dt2);
+            new DateRange(dt1, dt2);
         }
 
         [TestMethod]

@@ -6,8 +6,9 @@ namespace DateRanges
 {
     public static class DateTimeExtensions
     {
-        // DateTime ToDate(this DateTime value);
-        
-        // string ToDateString(this DateTime value);
+        // public static DateTime ToDate(this DateTime value);
+        // public static string ToDateString(this DateTime value);
+        // public static DateTime CoalesceMax(this DateTime? value);
+        // public static DateTime CoalesceMin(this DateTime? value);
     }
 }

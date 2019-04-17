@@ -2,6 +2,9 @@
 
 namespace DateRanges
 {
+    /// <summary>
+    /// Represents a range of dates or a time period, e.g. 2/14/2019 to 3/14/2019.
+    /// </summary>
     public struct DateRange
     {
         /// <summary>
@@ -15,13 +18,14 @@ namespace DateRanges
         public DateTime EndDate { get; private set; }
 
         /// <summary>
-        /// Instantiates a new DateRange value.
+        /// Initializes a new instance of the DateRange structure.
         /// </summary>
         /// <param name="startDate">The inclusive lower boundary of the date range. Time components are ignored.</param>
         /// <param name="endDate">The exclusive upper boundary of the date range. Time components are ignored.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when startDate is greater than endDate.</exception>
         public DateRange(DateTime startDate, DateTime endDate)
         {
+            // TODO: Use Date.NewDate(...)
             var internalStartDate = DateTime.SpecifyKind(startDate.Date, DateTimeKind.Unspecified);
             var internalEndDate = DateTime.SpecifyKind(endDate.Date, DateTimeKind.Unspecified);
 
@@ -35,10 +39,13 @@ namespace DateRanges
         }
 
         /// <summary>
-        /// Instantiates a new DateRange value where the start date is equal to 
-        /// DateTime.MinValue.Date and the end date is equal to DateTime.MaxValue.Date.
+        /// Initializes a new instance of the DateRange structure with its 
+        /// StartDate set to DateTime.MinValue.Date and its EndDate set to 
+        /// DateTime.MaxValue.Date.
         /// </summary>
         /// <returns>A DateRange value.</returns>
+
+        // TODO: Use Date.MinValue and Date.MaxValue.
         public static DateRange Full() => new DateRange(DateTime.MinValue, DateTime.MaxValue);
 
         /// <summary>
@@ -82,6 +89,7 @@ namespace DateRanges
         /// <returns>True when this equals value; otherwise, false.</returns>
         public bool Equals(DateRange value)
         {
+            // TODO: Use Date.Equals(...);
             return StartDate == value.StartDate &&
                    EndDate == value.EndDate;
         }
