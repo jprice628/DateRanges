@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DateRanges
 {
@@ -21,6 +19,7 @@ namespace DateRanges
         /// </summary>
         /// <param name="startDate">The inclusive lower boundary of the date range. Time components are ignored.</param>
         /// <param name="endDate">The exclusive upper boundary of the date range. Time components are ignored.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when startDate is greater than endDate.</exception>
         public DateRange(DateTime startDate, DateTime endDate)
         {
             var internalStartDate = DateTime.SpecifyKind(startDate.Date, DateTimeKind.Unspecified);
