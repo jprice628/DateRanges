@@ -19,7 +19,7 @@ namespace Tests
             var intersection = dr1.Intersect(dr2);
 
             // Assert
-            Assert.IsFalse(intersection.Any());
+            Assert.IsTrue(intersection.IsEmpty());
         }
 
         [TestMethod]
@@ -33,7 +33,7 @@ namespace Tests
             var intersection = dr1.Intersect(dr2);
 
             // Assert
-            Assert.IsFalse(intersection.Any());
+            Assert.IsTrue(intersection.IsEmpty());
         }
 
         [TestMethod]
@@ -54,7 +54,7 @@ namespace Tests
             var intersection = dr1.Intersect(dr2);
 
             // Assert
-            Assert.IsFalse(intersection.Any());
+            Assert.IsTrue(intersection.IsEmpty());
         }
 
         [TestMethod]
@@ -75,7 +75,7 @@ namespace Tests
             var intersection = dr1.Intersect(dr2);
 
             // Assert
-            Assert.IsFalse(intersection.Any());
+            Assert.IsTrue(intersection.IsEmpty());
         }
 
         [TestMethod]
@@ -94,8 +94,7 @@ namespace Tests
             var intersection = dr1.Intersect(dr2);
 
             // Assert
-            Assert.AreEqual(1, intersection.Count());
-            Assert.AreEqual(dr2, intersection.First());
+            Assert.AreEqual(dr2, intersection);
         }
 
         [TestMethod]
@@ -114,8 +113,7 @@ namespace Tests
             var intersection = dr1.Intersect(dr2);
 
             // Assert
-            Assert.AreEqual(1, intersection.Count());
-            Assert.AreEqual(dr1, intersection.First());
+            Assert.AreEqual(dr1, intersection);
         }
 
         [TestMethod]
@@ -137,8 +135,7 @@ namespace Tests
             var intersection = dr1.Intersect(dr2);
 
             // Assert
-            Assert.AreEqual(1, intersection.Count());
-            Assert.AreEqual(expected, intersection.First());
+            Assert.AreEqual(expected, intersection);
         }
 
         [TestMethod]
@@ -160,8 +157,7 @@ namespace Tests
             var intersection = dr1.Intersect(dr2);
 
             // Assert
-            Assert.AreEqual(1, intersection.Count());
-            Assert.AreEqual(expected, intersection.First());
+            Assert.AreEqual(expected, intersection);
         }
     }
 }

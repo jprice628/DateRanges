@@ -7,25 +7,29 @@ namespace DateRanges
 {
     public partial struct DateRange
     {
-        public IEnumerable<DateRange> Intersect(DateRange value)
+        /// <summary>
+        /// Calculates the intersection between two DateRange values.
+        /// </summary>
+        /// <param name="value">A DateRange value.</param>
+        /// <returns>A DateRange value representing the intersection between 
+        /// the two given DateRange values. When no intersection exists, this 
+        /// value will be an empty DateRange.</returns>
+        public DateRange Intersect(DateRange value)
         {
             if (IsEmpty() || value.IsEmpty())
             {
-                return Enumerable.Empty<DateRange>();
+                return Empty();
             }
             else if (EndDate <= value.StartDate || value.EndDate <= StartDate)
             {
-                return Enumerable.Empty<DateRange>();
+                return Empty();
             }
             else
             {
-                return new[]
-                {
-                    new DateRange(
-                        Date.Max(StartDate, value.StartDate),
-                        Date.Min(EndDate, value.EndDate)
-                        )
-                };
+                return new DateRange(
+                    Date.Max(StartDate, value.StartDate),
+                    Date.Min(EndDate, value.EndDate)
+                    );
             }
         }
     }
