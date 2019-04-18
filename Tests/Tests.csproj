@@ -52,6 +52,7 @@
     <Compile Include="DateRangeTests.cs" />
     <Compile Include="DateTests.cs" />
     <Compile Include="DateTimeExtensionsTests.cs" />
+    <Compile Include="DateRangeIntersectTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
