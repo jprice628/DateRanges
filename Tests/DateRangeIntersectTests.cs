@@ -123,8 +123,6 @@ namespace Tests
             // dr1      |--------|
             // dr2         |---------|
             // Result      |-----|
-            //
-            // Note: StartDates are inclusive. EndDates are exclusive.
 
             // Arrange
             var dr1 = new DateRange(Date.NewDate(2019, 1, 1), Date.NewDate(2019, 6, 1));
@@ -145,8 +143,6 @@ namespace Tests
             // dr1          |--------|
             // dr2      |---------|
             // Result       |-----|
-            //
-            // Note: StartDates are inclusive. EndDates are exclusive.
 
             // Arrange
             var dr1 = new DateRange(Date.NewDate(2019, 6, 1), Date.NewDate(2019, 12, 1));

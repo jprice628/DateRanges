@@ -12,8 +12,8 @@ namespace DateRanges
         /// </summary>
         /// <param name="value">A DateRange value.</param>
         /// <returns>A DateRange value representing the intersection between 
-        /// the two given DateRange values. When no intersection exists, this 
-        /// value will be an empty DateRange.</returns>
+        /// the two DateRanges. When no intersection exists, this value will 
+        /// be an empty DateRange.</returns>
         public DateRange Intersect(DateRange value)
         {
             if (IsEmpty() || value.IsEmpty())
