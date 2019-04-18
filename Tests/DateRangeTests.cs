@@ -36,6 +36,16 @@ namespace Tests
         }
 
         [TestMethod]
+        public void DateRange_Empty_InstantiatesEmptyDateRange()
+        {
+            // Act
+            var empty = DateRange.Empty();
+
+            // Assert
+            Assert.IsTrue(empty.IsEmpty());
+        }
+
+        [TestMethod]
         public void DateRange_Ctor_StripsTimeInfo()
         {
             // Act

@@ -5,7 +5,7 @@ namespace DateRanges
     /// <summary>
     /// Represents a range of dates or a time period, e.g. 2/14/2019 to 3/14/2019.
     /// </summary>
-    public struct DateRange
+    public partial struct DateRange
     {
         /// <summary>
         /// The inclusive lower boundary of the date range.
@@ -39,12 +39,17 @@ namespace DateRanges
 
         /// <summary>
         /// Initializes a new instance of the DateRange structure with its 
-        /// StartDate set to DateTime.MinValue.Date and its EndDate set to 
-        /// DateTime.MaxValue.Date.
+        /// StartDate set to Date.MinValue and its EndDate set to Date.MaxValue.
         /// </summary>
         /// <returns>A DateRange value.</returns>
-
         public static DateRange Full() => new DateRange(Date.MinValue, Date.MaxValue);
+
+        /// <summary>
+        /// Initializes a new instance of the DateRange structure with its 
+        /// StartDate and EndDate set to Date.MinValue.
+        /// </summary>
+        /// <returns>A DateRange value.</returns>
+        public static DateRange Empty() => new DateRange(Date.MinValue, Date.MinValue);
 
         /// <summary>
         /// Indicates whether or not this DateRange value is empty, i.e. its 
