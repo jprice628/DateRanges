@@ -1,5 +1,6 @@
 Stack
 Intersect
+Union
 Subtract
 Flatten
 Clamp DateRanges
