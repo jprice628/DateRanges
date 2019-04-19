@@ -4,6 +4,9 @@ using System.Text;
 
 namespace DateRanges
 {
+    /// <summary>
+    /// Used to represent changes when evaluating sets of DateRanges.
+    /// </summary>
     internal struct InflectionPoint
     {
         public DateTime Date { get; set; }
