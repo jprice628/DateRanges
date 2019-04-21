@@ -59,25 +59,17 @@ namespace DateRanges
         /// </summary>
         /// <param name="dateRanges">A set of DateRange values.</param>
         /// <returns>A set of DateRange values.</returns>
-        internal SetOfDateRanges Invoke(params DateRange[] dateRanges)
-        {
-            if (dateRanges.Length == 0) return Enumerable.Empty<DateRange>();
-
-            return Invoke(new[] { dateRanges });
-        }
-
-        /// <summary>
-        /// Invokes the operation.
-        /// </summary>
-        /// <param name="dateRanges">A set of DateRange values.</param>
-        /// <returns>A set of DateRange values.</returns>
         /// <exception cref="ArgumentNullException">Thrown when dateRanges is null.</exception>
         internal SetOfDateRanges Invoke(SetOfDateRanges dateRanges)
         {
             if (dateRanges == null) throw new ArgumentNullException(nameof(dateRanges));
             if (dateRanges.Count() == 0) return Enumerable.Empty<DateRange>();
 
-            return Invoke(new[] { dateRanges });
+            Init(1);
+            var ips = ToInflectionPoints(dateRanges, 0)
+                .OrderBy(x => x.Date);
+            ProcessInflectionPoints(ips);
+            return results;
         }
 
         /// <summary>
@@ -86,7 +78,7 @@ namespace DateRanges
         /// <param name="sets">A collections of DateRange value sets.</param>
         /// <returns>A set of DateRange values.</returns>
         /// <exception cref="ArgumentNullException">Thrown when values is null.</exception>
-        internal virtual SetOfDateRanges Invoke(IEnumerable<SetOfDateRanges> sets)
+        internal SetOfDateRanges Invoke(IEnumerable<SetOfDateRanges> sets)
         {
             if (sets == null) throw new ArgumentNullException(nameof(sets));
             if (sets.Count() == 0) return Enumerable.Empty<DateRange>();
@@ -121,11 +113,18 @@ namespace DateRanges
             int setIndex = 0;
             foreach(var set in sets)
             {
-                foreach (var dateRange in set)
-                {
-                    result.AddRange(ToInflectionPoints(dateRange, setIndex));
-                }
+                result.AddRange(ToInflectionPoints(set, setIndex));
                 setIndex++;
+            }
+            return result;
+        }
+
+        private static IEnumerable<InflectionPoint> ToInflectionPoints(SetOfDateRanges set, int setIndex)
+        {
+            var result = new List<InflectionPoint>();
+            foreach (var dateRange in set)
+            {
+                result.AddRange(ToInflectionPoints(dateRange, setIndex));
             }
             return result;
         }
@@ -201,6 +200,7 @@ namespace DateRanges
             {
                 results.Add(new DateRange(startDate, processDate));
             }
+
             latestOutcome = newOutcome;
         }
     }

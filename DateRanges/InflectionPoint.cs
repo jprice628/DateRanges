@@ -19,5 +19,10 @@ namespace DateRanges
             InflectionType = inflectionType;
             SetIndex = setIndex;
         }
+
+        public override string ToString()
+        {
+            return $"{InflectionType} {Date.ToYMDString()} [{SetIndex}]";
+        }
     }
 }

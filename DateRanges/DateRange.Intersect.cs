@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
+using SetOfDateRanges = System.Collections.Generic.IEnumerable<DateRanges.DateRange>;
 
 namespace DateRanges
 {
@@ -11,26 +12,101 @@ namespace DateRanges
         /// Calculates the intersection between two DateRange values.
         /// </summary>
         /// <param name="value">A DateRange value.</param>
-        /// <returns>A DateRange value representing the intersection between 
-        /// the two DateRanges. When no intersection exists, this value will 
-        /// be an empty DateRange.</returns>
-        public DateRange Intersect(DateRange value)
+        /// <returns>A set of DateRange values representing the intersection
+        /// of the two DateRanges. This set could contain zero or one values.
+        /// </returns>
+        public IEnumerable<DateRange> Intersect(DateRange value)
         {
-            if (IsEmpty() || value.IsEmpty())
+            // The intersect operation looks for intersections between sets of 
+            // DateRanges, so turn each DateRange value into a set containing 
+            // one value.
+            var sets = new[]
             {
-                return Empty();
-            }
-            else if (EndDate <= value.StartDate || value.EndDate <= StartDate)
-            {
-                return Empty();
-            }
-            else
-            {
-                return new DateRange(
-                    Date.Max(StartDate, value.StartDate),
-                    Date.Min(EndDate, value.EndDate)
-                    );
-            }
+                new[] { this },
+                new[] { value }
+            };
+
+            return new IntersectOperation().Invoke(sets);
+        }
+
+        /// <summary>
+        /// Calculates the intersection of all provided DateRange values.
+        /// </summary>
+        /// <param name="set">A set of DateRange values.</ param >
+        /// <returns>A set of DateRange values representing the intersection
+        /// of the provided DateRanges. This set could contain zero or one 
+        /// values.</returns>
+        /// <exception cref="ArgumentException">Thrown when 'set' contains 
+        /// less than two values.</exception>
+        public static IEnumerable<DateRange> Intersect(params DateRange[] set)
+        {
+            if (set.Length < 2) throw new ArgumentException("'set' must contain at least two DateRange values.");
+
+            // The intersect operation looks for intersections between sets of 
+            // DateRanges, so turn each DateRange value into a set containing 
+            // one value.
+            var sets = set
+                .Select(dateRange => new[] { dateRange })
+                .ToArray();
+            return new IntersectOperation().Invoke(sets);
+        }
+
+        /// <summary>
+        /// Calculates the intersection of all provided DateRange values.
+        /// </summary>
+        /// <param name="set">A set of DateRange values.</ param >
+        /// <returns>A set of DateRange values representing the intersection
+        /// of the provided DateRanges. This set could contain zero or one 
+        /// values.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when 'set' is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">Thrown when 'set' contains 
+        /// less than two values.</exception>
+        public static IEnumerable<DateRange> Intersect(SetOfDateRanges set)
+        {
+            if (set == null) throw new ArgumentNullException(nameof(set));
+            if (set.Count() < 2) throw new ArgumentException("'set' must contain at least two DateRange values.");
+
+            // The intersect operation looks for intersections between sets of 
+            // DateRanges, so turn each DateRange value into a set containing 
+            // one value.
+            var sets = set
+                .Select(dateRange => new[] { dateRange })
+                .ToArray();
+            return new IntersectOperation().Invoke(sets);
+        }
+
+        /// <summary>
+        /// Calculates the intersection between multiple sets of DateRange values.
+        /// </summary>
+        /// <param name="sets">Two or more sets of DateRange values.</param>
+        /// <returns>A set of DateRange values representing the intersection
+        /// between the provided sets of DateRange values.</returns>
+        /// <exception cref="ArgumentException">Thrown when less than two sets 
+        /// are provided.</exception>
+        public static IEnumerable<DateRange> Intersect(params SetOfDateRanges[] sets)
+        {
+            if (sets.Length < 2) throw new ArgumentException("'sets' must contain at least two sets of DateRange values.");
+
+            return new IntersectOperation().Invoke(sets);
+        }
+
+        /// <summary>
+        /// Calculates the intersection between multiple sets of DateRange values.
+        /// </summary>
+        /// <param name="sets">Two or more sets of DateRange values.</param>
+        /// <returns>A set of DateRange values representing the intersection
+        /// between the provided sets of DateRange values.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when 'sets' is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">Thrown when less than two sets 
+        /// are provided.</exception>
+        public static IEnumerable<DateRange> Intersect(IEnumerable<SetOfDateRanges> sets)
+        {
+            if (sets == null) throw new ArgumentNullException(nameof(sets));
+            if (sets.Count() < 2) throw new ArgumentException("'sets' must contain at least two sets of DateRange values.");
+
+            return new IntersectOperation().Invoke(sets);
         }
     }
 }

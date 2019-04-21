@@ -1,6 +1,6 @@
-﻿using System;
-using DateRanges;
+﻿using DateRanges;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Tests
 {

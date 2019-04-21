@@ -1,8 +1,7 @@
-﻿using System;
+﻿using DateRanges;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DateRanges;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Tests
 {
@@ -60,8 +59,6 @@ namespace Tests
             // a: |-------|
             // b:           |------------|
             // r: |-------| |------------|
-            //
-            // Note: StartDates are inclusive. EndDates are exclusive.
 
             // Arrange
             var dr0101_0301 = new DateRange(Date.NewDate(2019, 1, 1), Date.NewDate(2019, 3, 1));
@@ -83,8 +80,6 @@ namespace Tests
             // a:             |-------|
             // b: |---------|
             // r: |---------| |-------|
-            //
-            // Note: StartDates are inclusive. EndDates are exclusive.
 
             // Arrange
             var dr0601_0901 = new DateRange(Date.NewDate(2019, 6, 1), Date.NewDate(2019, 9, 1));

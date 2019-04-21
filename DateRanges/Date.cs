@@ -68,7 +68,7 @@ namespace DateRanges
         /// <exception cref="ArgumentException">Thrown when 'value' is not a date.</exception>
         public static bool IsMaxValue(DateTime value)
         {
-            if (!IsDate(value)) throw new ArgumentException("Error comparing to max value: 'value' is not a date.");
+            if (!IsDate(value)) throw new ArgumentException("'value' is not a date.");
             return AreEqual(value, MaxValue);
         }
 
@@ -81,7 +81,7 @@ namespace DateRanges
         /// <exception cref="ArgumentException">Thrown when 'value' is not a date.</exception>
         public static bool IsMinValue(DateTime value)
         {
-            if (!IsDate(value)) throw new ArgumentException("Error comparing to min value: 'value' is not a date.");
+            if (!IsDate(value)) throw new ArgumentException("'value' is not a date.");
             return AreEqual(value, MinValue);
         }
 
@@ -107,8 +107,8 @@ namespace DateRanges
         /// <exception cref="ArgumentException">Thrown when either 'a' or 'b' is not a date.</exception>
         public static bool AreEqual(DateTime a, DateTime b)
         {
-            if (!IsDate(a)) throw new ArgumentException("Error testing date equality: 'a' is not a date.");
-            if (!IsDate(b)) throw new ArgumentException("Error testing date equality: 'b' is not a date.");
+            if (!IsDate(a)) throw new ArgumentException("'a' is not a date.");
+            if (!IsDate(b)) throw new ArgumentException("'b' is not a date.");
 
             return a == b;
         }
@@ -122,8 +122,8 @@ namespace DateRanges
         /// <exception cref="ArgumentException">Thrown when either 'a' or 'b' is not a date.</exception>
         public static DateTime Min(DateTime a, DateTime b)
         {
-            if (!IsDate(a)) throw new ArgumentException("Error testing for min value: 'a' is not a date.");
-            if (!IsDate(b)) throw new ArgumentException("Error testing for min value: 'b' is not a date.");
+            if (!IsDate(a)) throw new ArgumentException("'a' is not a date.");
+            if (!IsDate(b)) throw new ArgumentException("'b' is not a date.");
 
             return a < b ? a : b;
         }
@@ -138,8 +138,8 @@ namespace DateRanges
         /// is not a date.</exception>
         public static DateTime Max(DateTime a, DateTime b)
         {
-            if (!IsDate(a)) throw new ArgumentException("Error testing for max value: 'a' is not a date.");
-            if (!IsDate(b)) throw new ArgumentException("Error testing for max value: 'b' is not a date.");
+            if (!IsDate(a)) throw new ArgumentException("'a' is not a date.");
+            if (!IsDate(b)) throw new ArgumentException("'b' is not a date.");
 
             return a > b ? a : b;
         }
@@ -158,9 +158,9 @@ namespace DateRanges
         /// 'minDate', or 'maxDate' is not a date.</exception>
         public static DateTime Clamp(DateTime date, DateTime minDate, DateTime maxDate)
         {
-            if (!IsDate(date)) throw new ArgumentException("Error clamping date: 'date' is not a date.");
-            if (!IsDate(minDate)) throw new ArgumentException("Error clamping date: 'minDate' is not a date.");
-            if (!IsDate(maxDate)) throw new ArgumentException("Error clamping date: 'maxDate' is not a date.");
+            if (!IsDate(date)) throw new ArgumentException("'date' is not a date.");
+            if (!IsDate(minDate)) throw new ArgumentException("'minDate' is not a date.");
+            if (!IsDate(maxDate)) throw new ArgumentException("'maxDate' is not a date.");
 
             if (date < minDate)
             {
