@@ -11,15 +11,15 @@ namespace Tests
         public void DateRange_Ctor_InstantiatesNewDateRange()
         {
             // Arrange
-            var dt1 = new DateTime(2019, 1, 1);
-            var dt2 = new DateTime(2019, 6, 1);
+            var dt0101 = new DateTime(2019, 1, 1);
+            var dt0601 = new DateTime(2019, 6, 1);
 
             // Act
-            var dr = new DateRange(dt1, dt2);
+            var result = new DateRange(dt0101, dt0601);
 
             // Assert
-            Assert.AreEqual(dt1, dr.StartDate);
-            Assert.AreEqual(dt2, dr.EndDate);
+            Assert.AreEqual(dt0101, result.StartDate);
+            Assert.AreEqual(dt0601, result.EndDate);
         }
 
         [TestMethod]
@@ -70,22 +70,22 @@ namespace Tests
         public void DateRange_Ctor_ThrowsWhenStartGreaterThanEnd()
         {
             // Arrange
-            var dt1 = new DateTime(2019, 6, 1);
-            var dt2 = new DateTime(2019, 1, 1);
+            var dt0601 = new DateTime(2019, 6, 1);
+            var dt0101 = new DateTime(2019, 1, 1);
 
             // Act
-            new DateRange(dt1, dt2);
+            new DateRange(dt0601, dt0101);
         }
 
         [TestMethod]
         public void DateRange_Equals_ReturnsTrueWhenEqual()
         {
             // Arrange
-            var dt1 = new DateTime(2019, 1, 1);
-            var dt2 = new DateTime(2019, 6, 1);
+            var dt0101 = new DateTime(2019, 1, 1);
+            var dt0601 = new DateTime(2019, 6, 1);
 
-            var dr1 = new DateRange(dt1, dt2);
-            var dr2 = new DateRange(dt1, dt2);
+            var dr1 = new DateRange(dt0101, dt0601);
+            var dr2 = new DateRange(dt0101, dt0601);
 
             // Act
             var areEqual = dr1.Equals(dr2);
@@ -112,11 +112,11 @@ namespace Tests
         public void DateRange_EqualsOperator_ReturnsTrueWhenEqual()
         {
             // Arrange
-            var dt1 = new DateTime(2019, 1, 1);
-            var dt2 = new DateTime(2019, 6, 1);
+            var dt0101 = new DateTime(2019, 1, 1);
+            var dt0601 = new DateTime(2019, 6, 1);
 
-            var dr1 = new DateRange(dt1, dt2);
-            var dr2 = new DateRange(dt1, dt2);
+            var dr1 = new DateRange(dt0101, dt0601);
+            var dr2 = new DateRange(dt0101, dt0601);
 
             // Act
             var areEqual = dr1 == dr2;
@@ -129,11 +129,11 @@ namespace Tests
         public void DateRange_NotEqualsOperator_ReturnsTrueWhenEqual()
         {
             // Arrange
-            var dr1 = new DateRange(new DateTime(2019, 1, 1), new DateTime(2019, 6, 1));
-            var dr2 = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 3, 1));
+            var dr0101_0601 = new DateRange(new DateTime(2019, 1, 1), new DateTime(2019, 6, 1));
+            var dr0201_0301 = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 3, 1));
 
             // Act
-            var areEqual = dr1 != dr2;
+            var areEqual = dr0101_0601 != dr0201_0301;
 
             // Assert
             Assert.IsTrue(areEqual);
@@ -143,10 +143,10 @@ namespace Tests
         public void DateRange_ToString_ReturnsString()
         {
             // Arrange
-            var dr1 = new DateRange(new DateTime(2019, 2, 10), new DateTime(2019, 10, 15));
+            var dr0210_1015 = new DateRange(new DateTime(2019, 2, 10), new DateTime(2019, 10, 15));
 
             // Act
-            var str = dr1.ToString();
+            var str = dr0210_1015.ToString();
 
             // Assert
             Assert.AreEqual("2019-02-10 to 2019-10-15", str);
@@ -156,10 +156,10 @@ namespace Tests
         public void DateRange_IsEmpty_ReturnsTrueWhenEmpty()
         {
             // Arrange
-            var dr = new DateRange(new DateTime(2019, 2, 10), new DateTime(2019, 2, 10));
+            var dr0210_0210 = new DateRange(new DateTime(2019, 2, 10), new DateTime(2019, 2, 10));
 
             // Act
-            var isEmpty = dr.IsEmpty();
+            var isEmpty = dr0210_0210.IsEmpty();
 
             // Assert
             Assert.IsTrue(isEmpty);
@@ -169,10 +169,10 @@ namespace Tests
         public void DateRange_IsEmpty_ReturnsFalseWhenNotEmpty()
         {
             // Arrange
-            var dr = new DateRange(new DateTime(2019, 2, 10), new DateTime(2019, 2, 20));
+            var dr0210_0220 = new DateRange(new DateTime(2019, 2, 10), new DateTime(2019, 2, 20));
 
             // Act
-            var isEmpty = dr.IsEmpty();
+            var isEmpty = dr0210_0220.IsEmpty();
 
             // Assert
             Assert.IsFalse(isEmpty);
@@ -182,23 +182,23 @@ namespace Tests
         public void DateRange_Length_ReturnsLengthOfDateRange()
         {
             // Arrange
-            var dr = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 2, 10));
+            var dr0201_0210 = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 2, 10));
 
             // Act
-            var length = dr.Length();
+            var length = dr0201_0210.Length();
 
             // Assert
-            Assert.AreEqual(new TimeSpan(9, 0, 0, 0), length);
+            Assert.AreEqual(TimeSpan.FromDays(9), length);
         }
 
         [TestMethod]
         public void DateRange_Contains_ReturnsTrueWhenDateWithinDateRange()
         {
             // Arrange            
-            var dr = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 2, 10));
+            var dr0201_0210 = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 2, 10));
 
             // Act
-            var contains = dr.Contains(new DateTime(2019, 2, 5));
+            var contains = dr0201_0210.Contains(new DateTime(2019, 2, 5));
 
             // Assert
             Assert.IsTrue(contains);
@@ -208,10 +208,10 @@ namespace Tests
         public void DateRange_Contains_ReturnsFalseWhenDateOutsideDateRange()
         {
             // Arrange            
-            var dr = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 2, 10));
+            var dr0201_0210 = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 2, 10));
 
             // Act
-            var contains = dr.Contains(new DateTime(2019, 2, 25));
+            var contains = dr0201_0210.Contains(new DateTime(2019, 2, 25));
 
             // Assert
             Assert.IsFalse(contains);
@@ -221,10 +221,10 @@ namespace Tests
         public void DateRange_Contains_ReturnsTrueWhenDateIsStartDate()
         {
             // Arrange            
-            var dr = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 2, 10));
+            var dr0201_0210 = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 2, 10));
 
             // Act
-            var contains = dr.Contains(new DateTime(2019, 2, 1));
+            var contains = dr0201_0210.Contains(new DateTime(2019, 2, 1));
 
             // Assert
             Assert.IsTrue(contains);
@@ -234,10 +234,10 @@ namespace Tests
         public void DateRange_Contains_ReturnsFalseWhenDateIsEndDate()
         {
             // Arrange            
-            var dr = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 2, 10));
+            var dr0201_0210 = new DateRange(new DateTime(2019, 2, 1), new DateTime(2019, 2, 10));
 
             // Act
-            var contains = dr.Contains(new DateTime(2019, 2, 10));
+            var contains = dr0201_0210.Contains(new DateTime(2019, 2, 10));
 
             // Assert
             Assert.IsFalse(contains);

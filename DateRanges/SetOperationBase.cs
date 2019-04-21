@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
+
+using SetOfDateRanges = System.Collections.Generic.IEnumerable<DateRanges.DateRange>;
 
 namespace DateRanges
 {
@@ -36,7 +37,7 @@ namespace DateRanges
         // contain the date being processed. Each time a start date is encounted, 
         // the value is incrememted. Each time an end date is encountered, the 
         // value is decremented.
-        private int[] numDateRangesPerSet;
+        private int[] setStates;
 
         // The outcome of the last date that was processed.
         private bool latestOutcome;
@@ -54,52 +55,59 @@ namespace DateRanges
         }
 
         /// <summary>
-        /// Invokes the operation for a single set of DateRange values.
+        /// Invokes the operation.
         /// </summary>
-        /// <param name="values">A set of DateRange values.</param>
+        /// <param name="dateRanges">A set of DateRange values.</param>
         /// <returns>A set of DateRange values.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when values is null.</exception>
-        public IEnumerable<DateRange> Invoke(IEnumerable<DateRange> values)
+        internal SetOfDateRanges Invoke(params DateRange[] dateRanges)
         {
-            if (values == null) throw new ArgumentNullException(nameof(values));
-            if (values.Count() == 0) return Enumerable.Empty<DateRange>();
+            if (dateRanges.Length == 0) return Enumerable.Empty<DateRange>();
 
-            Init(1);
-            var ips = ToInflectionPoints(values)
-                .OrderBy(x => x.Date);
-            ProcessInflectionPoints(ips);
-            return results;
+            return Invoke(new[] { dateRanges });
         }
 
         /// <summary>
-        /// Invokes the operation for multiple sets of DateRange values.
+        /// Invokes the operation.
         /// </summary>
-        /// <param name="values">An array containing multiple sets of DateRange values.</param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException">Thrown when values is null.</exception>
-        /// <exception cref="ArgumentException">Thrown when less than two sets of DateRange values are provided.</exception>
-        public IEnumerable<DateRange> Invoke(params IEnumerable<DateRange>[] values)
+        /// <param name="dateRanges">A set of DateRange values.</param>
+        /// <returns>A set of DateRange values.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when dateRanges is null.</exception>
+        internal SetOfDateRanges Invoke(SetOfDateRanges dateRanges)
         {
-            if (values == null) throw new ArgumentNullException(nameof(values));
-            if (values.Count() < 2) throw new ArgumentException("Error performing set operation on multiple sets: At least two sets must be provided.");
+            if (dateRanges == null) throw new ArgumentNullException(nameof(dateRanges));
+            if (dateRanges.Count() == 0) return Enumerable.Empty<DateRange>();
 
-            Init(values.Length);
-            var ips = ToInflectionPoints(values)
+            return Invoke(new[] { dateRanges });
+        }
+
+        /// <summary>
+        /// Invokes the operation.
+        /// </summary>
+        /// <param name="sets">A collections of DateRange value sets.</param>
+        /// <returns>A set of DateRange values.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when values is null.</exception>
+        internal virtual SetOfDateRanges Invoke(IEnumerable<SetOfDateRanges> sets)
+        {
+            if (sets == null) throw new ArgumentNullException(nameof(sets));
+            if (sets.Count() == 0) return Enumerable.Empty<DateRange>();
+
+            Init(sets.Count());
+            var ips = ToInflectionPoints(sets)
                 .OrderBy(x => x.Date);
             ProcessInflectionPoints(ips);
             return results;
         }
 
-        private void Init(int numStates)
+        private void Init(int numSets)
         {
-            numDateRangesPerSet = InitSetStates(numStates);
+            setStates = InitIntArray(numSets);
             latestOutcome = false;
             results = new List<DateRange>();
         }
 
-        private int[] InitSetStates(int numStates)
+        private static int[] InitIntArray(int size)
         {
-            var arr = new int[numStates];
+            var arr = new int[size];
             for (int i = 0; i < arr.Length; i++)
             {
                 arr[i] = 0;
@@ -107,15 +115,17 @@ namespace DateRanges
             return arr;
         }
 
-        private static IEnumerable<InflectionPoint> ToInflectionPoints(params IEnumerable<DateRange>[] sets)
+        private static IEnumerable<InflectionPoint> ToInflectionPoints(IEnumerable<SetOfDateRanges> sets)
         {
             var result = new List<InflectionPoint>();
-            for (var i = 0; i < sets.Length; i++)
+            int setIndex = 0;
+            foreach(var set in sets)
             {
-                foreach (var dateRange in sets[i])
+                foreach (var dateRange in set)
                 {
-                    result.AddRange(ToInflectionPoints(dateRange, i));
+                    result.AddRange(ToInflectionPoints(dateRange, setIndex));
                 }
+                setIndex++;
             }
             return result;
         }
@@ -146,40 +156,25 @@ namespace DateRanges
                 {
                     // All of the ips for the date have been accounted for, 
                     // and the date is about to change.
-                    HandleNewOutcome(DetermineOutcome(numDateRangesPerSet));
+                    HandleNewOutcome(DetermineOutcome(setStates));
                     processDate = ip.Date;
                 }
 
                 switch (ip.InflectionType)
                 {
                     case InflectionType.DateRangeStart:
-                        numDateRangesPerSet[ip.SetIndex]++;
+                        setStates[ip.SetIndex]++;
                         break;
                     case InflectionType.DateRangeEnd:
-                        numDateRangesPerSet[ip.SetIndex]--;
+                        setStates[ip.SetIndex]--;
                         break;
                 }
             }
 
             // There's always one final outcome that isn't caught by the block 
             // above and needs to be determined.
-            HandleNewOutcome(DetermineOutcome(numDateRangesPerSet));
+            HandleNewOutcome(DetermineOutcome(setStates));
         }
-
-        private bool DetermineOutcome(int[] setStates)
-        {
-            return setStates.Length == 1 ? DetermineSingleSetOutcome(setStates[0]) : DetermineMultiSetOutcome(setStates);
-        }
-
-        /// <summary>
-        /// Overridden in derived classes to determine the outcome for a single 
-        /// set of DateRange values based on the number of DateRange values 
-        /// containing a particular date.
-        /// </summary>
-        /// <param name="numDateRanges">The number of DateRange values that 
-        /// contain the date in question.</param>
-        /// <returns></returns>
-        protected abstract bool DetermineSingleSetOutcome(int numDateRanges);
 
         /// <summary>
         /// Overridden in derived classes to determine the outcome for multiple 
@@ -192,7 +187,7 @@ namespace DateRanges
         /// whose end date is greater than the date in question.
         /// </param>
         /// <returns></returns>
-        protected abstract bool DetermineMultiSetOutcome(int[] numDateRangePerSet);
+        protected abstract bool DetermineOutcome(int[] setStates);
 
         private void HandleNewOutcome(bool newOutcome)
         {

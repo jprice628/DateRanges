@@ -17,10 +17,10 @@ namespace Tests
             var date = dateTime.ToDate();
 
             // Assert
-            Assert.AreEqual(
-                new DateTime(2019, 2, 14, 0, 0, 0, DateTimeKind.Unspecified),
-                date
-                );
+            Assert.AreEqual(new DateTime(2019, 2, 14, 0, 0, 0),date);
+            // The DateTime.Equals method doesn't check to see if the Kind 
+            // property of the two values are equal.
+            Assert.AreEqual(DateTimeKind.Unspecified, date.Kind);
         }
 
         [TestMethod]

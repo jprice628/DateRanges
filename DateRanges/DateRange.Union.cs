@@ -1,41 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
+﻿using System.Collections.Generic;
+
+using SetOfDateRanges = System.Collections.Generic.IEnumerable<DateRanges.DateRange>;
 
 namespace DateRanges
 {
     public partial struct DateRange
     {
         /// <summary>
-        /// Calculates the union between two DateRange values.
+        /// Calculates the union of two DateRange values.
         /// </summary>
         /// <param name="value">A DateRange value.</param>
-        /// <returns>A set of DateRange values representing the union between 
+        /// <returns>A set of DateRange values representing the union of 
         /// the two DateRanges. This set could contain zero, one, or two 
         /// DateRange values.</returns>
         public IEnumerable<DateRange> Union(DateRange value)
         {
-            if (IsEmpty())
-            {
-                return value.IsEmpty() ? Enumerable.Empty<DateRange>() : new[] { value };
-            }
-            else if (value.IsEmpty())
-            {
-                return new[] { this };
-            }
-            else if (EndDate < value.StartDate || value.EndDate < StartDate)
-            {
-                return new[] { this, value };
-            }
-            else
-            {
-                var dr = new DateRange(
-                    Date.Min(StartDate, value.StartDate),
-                    Date.Max(EndDate, value.EndDate)
-                    );
-                return new[] { dr };                
-            }
+            return new UnionOperation().Invoke(this, value);
+        }
+
+        /// <summary>
+        /// Calculates the union of all provided DateRange values.
+        /// </summary>
+        /// <param name="set">A set of DateRange values.</param>
+        /// <returns>A set of DateRange values representing the union of all 
+        /// provided values.</returns>
+        public static IEnumerable<DateRange> Union(params DateRange[] set)
+        {
+            return new UnionOperation().Invoke(set);
+        }
+
+        /// <summary>
+        /// Calculates the union of all provided DateRange values.
+        /// </summary>
+        /// <param name="set">A set of DateRange values.</param>
+        /// <returns>A set of DateRange values representing the union of all 
+        /// provided values.</returns>
+        public static IEnumerable<DateRange> Union(SetOfDateRanges set)
+        {
+            return new UnionOperation().Invoke(set);
+        }
+
+        /// <summary>
+        /// Calculates the union of all DateRange values included in multiple sets.
+        /// </summary>
+        /// <param name="set">A collection of sets of DateRange values.</param>
+        /// <returns>A set of DateRange values representing the union of all 
+        /// provided values.</returns>
+        public static IEnumerable<DateRange> Union(params SetOfDateRanges[] sets)
+        {
+            return new UnionOperation().Invoke(sets);
+        }
+
+        /// <summary>
+        /// Calculates the union of all DateRange values included in multiple sets.
+        /// </summary>
+        /// <param name="set">A collection of sets of DateRange values.</param>
+        /// <returns>A set of DateRange values representing the union of all 
+        /// provided values.</returns>
+        public static IEnumerable<DateRange> Union(IEnumerable<SetOfDateRanges> sets)
+        {
+            return new UnionOperation().Invoke(sets);
         }
     }
 }
