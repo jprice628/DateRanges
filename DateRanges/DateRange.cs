@@ -20,9 +20,15 @@ namespace DateRanges
         /// <summary>
         /// Initializes a new instance of the DateRange structure.
         /// </summary>
-        /// <param name="startDate">The inclusive lower boundary of the date range. Time components are ignored.</param>
-        /// <param name="endDate">The exclusive upper boundary of the date range. Time components are ignored.</param>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when startDate is greater than endDate.</exception>
+        /// <param name="startDate">
+        /// The inclusive lower boundary of the date range. Time components are ignored.
+        /// </param>
+        /// <param name="endDate">
+        /// The exclusive upper boundary of the date range. Time components are ignored.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown when startDate is greater than endDate.
+        /// </exception>
         public DateRange(DateTime startDate, DateTime endDate)
         {
             var internalStartDate = Date.NewDate(startDate);
@@ -56,28 +62,34 @@ namespace DateRanges
         /// start date is equal to its end date giving the DateRange a length 
         /// of zero.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// True if StartDate and EndDate are equal; otherwise, false.
+        /// </returns>
         public bool IsEmpty() => Date.AreEqual(StartDate, EndDate);
 
         /// <summary>
-        /// Calculates the length of the DateRange. Note that the end date of 
-        /// a DateRange is exclusive.
+        /// Calculates the length of the DateRange.
         /// </summary>
         /// <returns>A TimeSpan value.</returns>
+        /// <remarks>StartDate is inclusive. EndDate is exclusive.</remarks>
         public TimeSpan Length() => EndDate - StartDate;
 
         /// <summary>
         /// Determines whether or not a date is contained within this DateRange.
         /// </summary>
         /// <param name="value">A DateTime value.</param>
-        /// <returns>True if the value is within this DateRange; otherwise, false.</returns>
+        /// <returns>
+        /// True if the value is within this DateRange; otherwise, false.
+        /// </returns>
         public bool Contains(DateTime value) => value >= StartDate && value < EndDate;
 
         /// <summary>
         /// Compares this DateRange with another object for equality.
         /// </summary>
         /// <param name="obj">An object.</param>
-        /// <returns>True when this and obj are equal; otherwise, false.</returns>
+        /// <returns>
+        /// True when this and obj are equal; otherwise, false.
+        /// </returns>
         public override bool Equals(object obj)
         {
             if (!(obj is DateRange)) return false;
@@ -89,7 +101,9 @@ namespace DateRanges
         /// Compares this DateRange with another DateRange for equality.
         /// </summary>
         /// <param name="value">A DateRange.</param>
-        /// <returns>True when this equals value; otherwise, false.</returns>
+        /// <returns>
+        /// True when this equals value; otherwise, false.
+        /// </returns>
         public bool Equals(DateRange value)
         {
             return Date.AreEqual(StartDate, value.StartDate) &&
@@ -113,7 +127,9 @@ namespace DateRanges
         /// </summary>
         /// <param name="a">A DateRange value.</param>
         /// <param name="b">A DateRange value.</param>
-        /// <returns>True when a and b are equal; otherwise, false.</returns>
+        /// <returns>
+        /// True when a and b are equal; otherwise, false.
+        /// </returns>
         public static bool operator ==(DateRange a, DateRange b) => a.Equals(b);
 
         /// <summary>
@@ -121,13 +137,17 @@ namespace DateRanges
         /// </summary>
         /// <param name="a">A DateRange value.</param>
         /// <param name="b">A DateRange value.</param>
-        /// <returns>True when a and b are not equal; otherwise, false.</returns>
+        /// <returns>
+        /// True when a and b are not equal; otherwise, false.
+        /// </returns>
         public static bool operator !=(DateRange a, DateRange b) => !a.Equals(b);
 
         /// <summary>
         /// Returns a string representation of this DateRange value.
         /// </summary>
-        /// <returns>A string representation of this DateRange value</returns>
+        /// <returns>
+        /// A string representation of this DateRange value
+        /// </returns>
         public override string ToString()
         {
             return $"{StartDate.ToYMDString()} to {EndDate.ToYMDString()}";

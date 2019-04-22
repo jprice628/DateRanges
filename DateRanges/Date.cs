@@ -49,8 +49,10 @@ namespace DateRanges
         /// Determines whether or not the provided DateTime value is a date.
         /// </summary>
         /// <param name="value">A DateTime value.</param>
-        /// <returns>True if the value's time components are set to zero and 
-        /// 'Kind' is set to 'Unspecified'; otherwise, false.</returns>
+        /// <returns>
+        /// True if the value's time components are set to zero and 'Kind' is 
+        /// set to 'Unspecified'; otherwise, false.
+        /// </returns>
         public static bool IsDate(DateTime value)
         {
             return value.Hour == 0 &&
@@ -64,8 +66,12 @@ namespace DateRanges
         /// the maximum date value.
         /// </summary>
         /// <param name="value">A DateTime value.</param>
-        /// <returns>True if 'value' is equal to Date.MaxValue; otherwise, false.</returns>
-        /// <exception cref="ArgumentException">Thrown when 'value' is not a date.</exception>
+        /// <returns>
+        /// True if 'value' is equal to Date.MaxValue; otherwise, false.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when 'value' is not a date.
+        /// </exception>
         public static bool IsMaxValue(DateTime value)
         {
             if (!IsDate(value)) throw new ArgumentException("'value' is not a date.");
@@ -77,8 +83,12 @@ namespace DateRanges
         /// the minimum date value.
         /// </summary>
         /// <param name="value">A DateTime value.</param>
-        /// <returns>True if 'value' is equal to Date.MinValue; otherwise, false.</returns>
-        /// <exception cref="ArgumentException">Thrown when 'value' is not a date.</exception>
+        /// <returns>
+        /// True if 'value' is equal to Date.MinValue; otherwise, false.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when 'value' is not a date.
+        /// </exception>
         public static bool IsMinValue(DateTime value)
         {
             if (!IsDate(value)) throw new ArgumentException("'value' is not a date.");
@@ -90,8 +100,12 @@ namespace DateRanges
         /// today's date.
         /// </summary>
         /// <param name="value">A DateTime value.</param>
-        /// <returns>True if 'value' is equal to Date.Today; otherwise, false.</returns>
-        /// <exception cref="ArgumentException">Thrown when 'value' is not a date.</exception>
+        /// <returns>
+        /// True if 'value' is equal to Date.Today; otherwise, false.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when 'value' is not a date.
+        /// </exception>
         public static bool IsToday(DateTime value)
         {
             if (!IsDate(value)) throw new ArgumentException("Error testing for today's date: 'value' is not a date.");
@@ -103,8 +117,12 @@ namespace DateRanges
         /// </summary>
         /// <param name="a">A DateTime value.</param>
         /// <param name="b">A DateTime value.</param>
-        /// <returns>True if 'a' and 'b' are equal; otherwise, false.</returns>
-        /// <exception cref="ArgumentException">Thrown when either 'a' or 'b' is not a date.</exception>
+        /// <returns>
+        /// True if 'a' and 'b' are equal; otherwise, false.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when either 'a' or 'b' is not a date.
+        /// </exception>
         public static bool AreEqual(DateTime a, DateTime b)
         {
             if (!IsDate(a)) throw new ArgumentException("'a' is not a date.");
@@ -118,8 +136,12 @@ namespace DateRanges
         /// </summary>
         /// <param name="a">A DateTime value.</param>
         /// <param name="b">A DateTime value.</param>
-        /// <returns>The lesser of 'a' and 'b'.</returns>
-        /// <exception cref="ArgumentException">Thrown when either 'a' or 'b' is not a date.</exception>
+        /// <returns>
+        /// The lesser of 'a' and 'b'.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when either 'a' or 'b' is not a date.
+        /// </exception>
         public static DateTime Min(DateTime a, DateTime b)
         {
             if (!IsDate(a)) throw new ArgumentException("'a' is not a date.");
@@ -133,9 +155,12 @@ namespace DateRanges
         /// </summary>
         /// <param name="a">A DateTime value.</param>
         /// <param name="b">A DateTime value.</param>
-        /// <returns>The greater of 'a' and 'b'.</returns>
-        /// <exception cref="ArgumentException">Thrown when either 'a' or 'b' 
-        /// is not a date.</exception>
+        /// <returns>
+        /// The greater of 'a' and 'b'.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when either 'a' or 'b' is not a date.
+        /// </exception>
         public static DateTime Max(DateTime a, DateTime b)
         {
             if (!IsDate(a)) throw new ArgumentException("'a' is not a date.");
@@ -148,14 +173,19 @@ namespace DateRanges
         /// Clamps the specified date between the specified min and max date values.
         /// </summary>
         /// <param name="date">A DateTime value to be clamped.</param>
-        /// <param name="minDate">A DateTime value which specifies the lower 
-        /// boundary of the result.</param>
-        /// /// <param name="maxDate">A DateTime value which specifies the 
-        /// upper boundary of the result.</param>
-        /// <returns>'minDate' when 'date' is less than 'minDate', 'maxDate' 
-        /// when 'date' is greater than 'maxDate'; otherwise, 'date'.</returns>
-        /// <exception cref="ArgumentException">Thrown when either 'date', 
-        /// 'minDate', or 'maxDate' is not a date.</exception>
+        /// <param name="minDate">
+        /// A DateTime value which specifies the lower boundary of the result.
+        /// </param>
+        /// /// <param name="maxDate">
+        /// A DateTime value which specifies the upper boundary of the result.
+        /// </param>
+        /// <returns>
+        /// 'minDate' when 'date' is less than 'minDate', 'maxDate' when 'date' 
+        /// is greater than 'maxDate'; otherwise, 'date'.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when either 'date', 'minDate', or 'maxDate' is not a date.
+        /// </exception>
         public static DateTime Clamp(DateTime date, DateTime minDate, DateTime maxDate)
         {
             if (!IsDate(date)) throw new ArgumentException("'date' is not a date.");
