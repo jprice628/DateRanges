@@ -28,6 +28,9 @@ namespace DateRanges
     /// </remarks>
     internal abstract class SetOperationBase
     {
+        // Stores the inflection points for the current operation.
+        private List<InflectionPoint> inflectionPoints;
+
         // Stores the date that is currently being processed as the operation 
         // iterates through a series of inflection points generated from one 
         // or more sets of date ranges.
@@ -44,7 +47,7 @@ namespace DateRanges
 
         // Stores the start date of a result DateRange during processing 
         // while its end date is still unknown.
-        private DateTime startDate;
+        private DateTime startDateBuffer;
 
         // Stores the set of DateRange values that will be returned as the 
         // final result of the operation.
@@ -66,9 +69,27 @@ namespace DateRanges
             if (dateRanges.Count() == 0) return Enumerable.Empty<DateRange>();
 
             Init(1);
-            var ips = ToInflectionPoints(dateRanges, 0)
-                .OrderBy(x => x.Date);
-            ProcessInflectionPoints(ips);
+            AddInflectionPoints(dateRanges, 0);
+            inflectionPoints.Sort(InflectionPointComparer);
+            ProcessInflectionPoints();
+            return results;
+        }
+
+        /// <summary>
+        /// Invokes the operation, treating each DateRange value as if it were part of a different set.
+        /// </summary>
+        /// <param name="dateRanges">A set of DateRange values.</param>
+        /// <returns>A set of DateRange values.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when dateRanges is null.</exception>
+        internal SetOfDateRanges InvokeAsSeparateSets(SetOfDateRanges dateRanges)
+        {
+            if (dateRanges == null) throw new ArgumentNullException(nameof(dateRanges));
+            if (dateRanges.Count() == 0) return Enumerable.Empty<DateRange>();
+
+            Init(dateRanges.Count());
+            AddInflectionPointsAsSeparateSets(dateRanges);
+            inflectionPoints.Sort(InflectionPointComparer);
+            ProcessInflectionPoints();
             return results;
         }
 
@@ -84,14 +105,15 @@ namespace DateRanges
             if (sets.Count() == 0) return Enumerable.Empty<DateRange>();
 
             Init(sets.Count());
-            var ips = ToInflectionPoints(sets)
-                .OrderBy(x => x.Date);
-            ProcessInflectionPoints(ips);
+            AddInflectionPoints(sets);
+            inflectionPoints.Sort(InflectionPointComparer);
+            ProcessInflectionPoints();
             return results;
         }
 
         private void Init(int numSets)
         {
+            inflectionPoints = new List<InflectionPoint>();
             setStates = InitIntArray(numSets);
             latestOutcome = false;
             results = new List<DateRange>();
@@ -107,49 +129,57 @@ namespace DateRanges
             return arr;
         }
 
-        private static IEnumerable<InflectionPoint> ToInflectionPoints(IEnumerable<SetOfDateRanges> sets)
+        private void AddInflectionPoints(IEnumerable<SetOfDateRanges> sets)
         {
-            var result = new List<InflectionPoint>();
             int setIndex = 0;
             foreach(var set in sets)
             {
-                result.AddRange(ToInflectionPoints(set, setIndex));
+                AddInflectionPoints(set, setIndex);
                 setIndex++;
             }
-            return result;
         }
 
-        private static IEnumerable<InflectionPoint> ToInflectionPoints(SetOfDateRanges set, int setIndex)
+        private void AddInflectionPoints(SetOfDateRanges set, int setIndex)
         {
-            var result = new List<InflectionPoint>();
             foreach (var dateRange in set)
             {
-                result.AddRange(ToInflectionPoints(dateRange, setIndex));
+                AddInflectionPoints(dateRange, setIndex);
             }
-            return result;
         }
 
-        private static IEnumerable<InflectionPoint> ToInflectionPoints(DateRange value, int setIndex)
+        private void AddInflectionPoints(DateRange value, int setIndex)
         {
-            if (value.IsEmpty()) return Enumerable.Empty<InflectionPoint>();
+            if (value.IsEmpty()) return;
 
-            return new[]
+            inflectionPoints.Add(new InflectionPoint(value.StartDate, InflectionType.DateRangeStart, setIndex));
+            inflectionPoints.Add(new InflectionPoint(value.EndDate, InflectionType.DateRangeEnd, setIndex));
+        }
+
+        private void AddInflectionPointsAsSeparateSets(SetOfDateRanges dateRanges)
+        {
+            int setIndex = 0;
+            foreach (var dateRange in dateRanges)
             {
-                new InflectionPoint(value.StartDate, InflectionType.DateRangeStart, setIndex),
-                new InflectionPoint(value.EndDate, InflectionType.DateRangeEnd, setIndex)
-            };
+                AddInflectionPoints(dateRange, setIndex);
+                setIndex++;
+            }
         }
 
-        private void ProcessInflectionPoints(IEnumerable<InflectionPoint> ips)
+        private static int InflectionPointComparer(InflectionPoint a, InflectionPoint b)
         {
-            if (ips.Count() == 0) return;
+            return a.Date.CompareTo(b.Date);
+        }
+
+        private void ProcessInflectionPoints()
+        {
+            if (inflectionPoints.Count == 0) return;
 
             // The trick to processing the ips is that all of the ips for a given 
             // date need to be accounted for before an outcome is determined for 
             // that date.
 
-            processDate = ips.First().Date;
-            foreach (var ip in ips)
+            processDate = inflectionPoints.First().Date;
+            foreach (var ip in inflectionPoints)
             {
                 if (processDate != ip.Date)
                 {
@@ -194,11 +224,11 @@ namespace DateRanges
 
             if (newOutcome)
             {
-                startDate = processDate;
+                startDateBuffer = processDate;
             }
             else
             {
-                results.Add(new DateRange(startDate, processDate));
+                results.Add(new DateRange(startDateBuffer, processDate));
             }
 
             latestOutcome = newOutcome;

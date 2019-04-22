@@ -17,16 +17,7 @@ namespace DateRanges
         /// </returns>
         public IEnumerable<DateRange> Intersect(DateRange value)
         {
-            // The intersect operation looks for intersections between sets of 
-            // DateRanges, so turn each DateRange value into a set containing 
-            // one value.
-            var sets = new[]
-            {
-                new[] { this },
-                new[] { value }
-            };
-
-            return new IntersectOperation().Invoke(sets);
+            return new IntersectOperation().InvokeAsSeparateSets(new[] { this, value });
         }
 
         /// <summary>
@@ -42,13 +33,7 @@ namespace DateRanges
         {
             if (set.Length < 2) throw new ArgumentException("'set' must contain at least two DateRange values.");
 
-            // The intersect operation looks for intersections between sets of 
-            // DateRanges, so turn each DateRange value into a set containing 
-            // one value.
-            var sets = set
-                .Select(dateRange => new[] { dateRange })
-                .ToArray();
-            return new IntersectOperation().Invoke(sets);
+            return new IntersectOperation().InvokeAsSeparateSets(set);
         }
 
         /// <summary>
@@ -67,13 +52,7 @@ namespace DateRanges
             if (set == null) throw new ArgumentNullException(nameof(set));
             if (set.Count() < 2) throw new ArgumentException("'set' must contain at least two DateRange values.");
 
-            // The intersect operation looks for intersections between sets of 
-            // DateRanges, so turn each DateRange value into a set containing 
-            // one value.
-            var sets = set
-                .Select(dateRange => new[] { dateRange })
-                .ToArray();
-            return new IntersectOperation().Invoke(sets);
+            return new IntersectOperation().InvokeAsSeparateSets(set);
         }
 
         /// <summary>
