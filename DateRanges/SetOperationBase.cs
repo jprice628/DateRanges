@@ -131,11 +131,10 @@ namespace DateRanges
 
         private void AddInflectionPoints(IEnumerable<SetOfDateRanges> sets)
         {
-            int setIndex = 0;
+            int setIndex = -1;
             foreach(var set in sets)
             {
-                AddInflectionPoints(set, setIndex);
-                setIndex++;
+                AddInflectionPoints(set, ++setIndex);
             }
         }
 
@@ -157,11 +156,10 @@ namespace DateRanges
 
         private void AddInflectionPointsAsSeparateSets(SetOfDateRanges dateRanges)
         {
-            int setIndex = 0;
+            int setIndex = -1;
             foreach (var dateRange in dateRanges)
             {
-                AddInflectionPoints(dateRange, setIndex);
-                setIndex++;
+                AddInflectionPoints(dateRange, ++setIndex);
             }
         }
 
@@ -192,10 +190,10 @@ namespace DateRanges
                 switch (ip.InflectionType)
                 {
                     case InflectionType.DateRangeStart:
-                        setStates[ip.SetIndex]++;
+                        setStates[ip.Key]++;
                         break;
                     case InflectionType.DateRangeEnd:
-                        setStates[ip.SetIndex]--;
+                        setStates[ip.Key]--;
                         break;
                 }
             }

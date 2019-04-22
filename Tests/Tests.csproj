@@ -55,6 +55,7 @@
     <Compile Include="DateTests.cs" />
     <Compile Include="DateTimeExtensionsTests.cs" />
     <Compile Include="DateRangeIntersectTests.cs" />
+    <Compile Include="StackOperationBaseTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
