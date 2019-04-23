@@ -3,7 +3,7 @@ using DateRanges;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     public class StackOperationBaseTests

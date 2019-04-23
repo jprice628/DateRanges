@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     public class DateRangeUnionTests
