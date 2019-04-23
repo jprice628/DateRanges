@@ -34,7 +34,7 @@ namespace DateRanges
 
         // Stores the set of DateRange values that will be returned as the 
         // final result of the operation.
-        private List<Stack<T>> results;
+        private List<StackedItems<T>> results;
 
         protected StackOperationBase()
         {
@@ -45,7 +45,7 @@ namespace DateRanges
         /// </summary>
         /// <param name="items">The set of items to be stacked.</param>
         /// <returns>A set of stack values.</returns>
-        public IEnumerable<Stack<T>> Invoke(params T[] items)
+        public IEnumerable<StackedItems<T>> Invoke(params T[] items)
         {
             return Invoke((IEnumerable<T>)items);
         }
@@ -55,10 +55,10 @@ namespace DateRanges
         /// </summary>
         /// <param name="items">The set of items to be stacked.</param>
         /// <returns>A set of stack values.</returns>
-        public IEnumerable<Stack<T>> Invoke(IEnumerable<T> items)
+        public IEnumerable<StackedItems<T>> Invoke(IEnumerable<T> items)
         {
             if (items == null) throw new ArgumentNullException(nameof(items));
-            if (items.Count() == 0) return Enumerable.Empty<Stack<T>>();
+            if (items.Count() == 0) return Enumerable.Empty<StackedItems<T>>();
 
             Init();
             AddInflectionPoints(items);
@@ -70,7 +70,7 @@ namespace DateRanges
         private void Init()
         {
             inflectionPoints = new List<InflectionPoint<T>>();
-            results = new List<Stack<T>>();
+            results = new List<StackedItems<T>>();
             itemBuffer = new Dictionary<int, T>();
         }
 
@@ -135,7 +135,7 @@ namespace DateRanges
         {
             if (!itemBuffer.Any()) return;
 
-            results.Add(new Stack<T>(
+            results.Add(new StackedItems<T>(
                 new DateRange(startDateBuffer, endDate),
                 itemBuffer.Values.ToArray()
                 ));
