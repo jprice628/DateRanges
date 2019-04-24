@@ -240,13 +240,12 @@ namespace UnitTests
 
             var set = new List<DateRange>
             {
-                dr0101_0501,
                 dr0301_0601,
                 dr0201_0401
             };
 
             // Act - IEnumerable<DateRange> DateRange.Union(SetOfDateRanges set)
-            var result = DateRange.Difference(set);
+            var result = dr0101_0501.Difference(set);
 
             // Assert
             Assert.AreEqual(1, result.Count());
@@ -271,8 +270,7 @@ namespace UnitTests
             var dr0101_0201 = new DateRange(Date.NewDate(2019, 1, 1), Date.NewDate(2019, 2, 1));
 
             // Act - IEnumerable<DateRange> DateRange.Union(SetOfDateRanges set)
-            var result = DateRange.Difference(
-                dr0101_0501,
+            var result = dr0101_0501.Difference(
                 dr0301_0601,
                 dr0201_0401
                 );
@@ -284,48 +282,6 @@ namespace UnitTests
 
         [TestMethod]
         public void DateRange_DifferenceMultiSet()
-        {
-            // 1/1 1/10  1/20 2/1         3/1  4/1    4/15        6/1     8/1
-            //  |   |-----|    |-----------|    |------|           |-------|
-            //      .     .    . 2/10   2/20    .     4/15   5/1   .  7/1  .    9/1
-            //      .     .    .  |------| .    .      |------|    .   |---------|
-            // Result:    .    .  .      . .    .      .      .    .   .   .     .
-            //      |-----|    |--|      |-|    |------|           |---|  
-
-            // Arrange
-            var empty0101 = new DateRange(Date.NewDate(2019, 1, 1), Date.NewDate(2019, 1, 1));
-            var dr0110_0120 = new DateRange(Date.NewDate(2019, 1, 10), Date.NewDate(2019, 1, 20));
-            var dr0201_0301 = new DateRange(Date.NewDate(2019, 2, 1), Date.NewDate(2019, 3, 1));
-            var dr0210_0220 = new DateRange(Date.NewDate(2019, 2, 10), Date.NewDate(2019, 2, 20));
-            var dr0401_0415 = new DateRange(Date.NewDate(2019, 4, 1), Date.NewDate(2019, 4, 15));
-            var dr0415_0501 = new DateRange(Date.NewDate(2019, 4, 15), Date.NewDate(2019, 5, 1));
-            var dr0601_0801 = new DateRange(Date.NewDate(2019, 6, 1), Date.NewDate(2019, 8, 1));
-            var dr0701_0901 = new DateRange(Date.NewDate(2019, 7, 1), Date.NewDate(2019, 9, 1));
-            // The following are only part of the result set.
-            var dr0201_0210 = new DateRange(Date.NewDate(2019, 2, 1), Date.NewDate(2019, 2, 10));
-            var dr0220_0301 = new DateRange(Date.NewDate(2019, 2, 20), Date.NewDate(2019, 3, 1));
-            var dr0601_0701 = new DateRange(Date.NewDate(2019, 6, 1), Date.NewDate(2019, 7, 1));
-
-            var sets = new List<IEnumerable<DateRange>>
-            {
-                new[] { empty0101, dr0110_0120, dr0201_0301, dr0401_0415, dr0601_0801 },
-                new[] { dr0210_0220, dr0415_0501, dr0701_0901 }
-            };
-
-            // Act - IEnumerable<DateRange> DateRange.Union(IEnumerable<SetOfDateRanges> sets)
-            var result = DateRange.Difference(sets);
-
-            // Assert
-            Assert.AreEqual(5, result.Count());
-            Assert.IsTrue(result.Contains(dr0110_0120));
-            Assert.IsTrue(result.Contains(dr0201_0210));
-            Assert.IsTrue(result.Contains(dr0220_0301));
-            Assert.IsTrue(result.Contains(dr0401_0415));
-            Assert.IsTrue(result.Contains(dr0601_0701));
-        }
-
-        [TestMethod]
-        public void DateRange_DifferenceMultiSetParams()
         {
             // 1/1 1/10  1/20 2/1         3/1  4/1    4/15        6/1     8/1
             //  |   |-----|    |-----------|    |------|           |-------|

@@ -65,8 +65,6 @@ namespace DateRanges
         /// <returns>A set of DateRange values.</returns>
         internal SetOfDateRanges Invoke(DateRange a, DateRange b)
         {
-            if (a.IsEmpty() && b.IsEmpty()) return Enumerable.Empty<DateRange>();
-
             Init(2);
             AddInflectionPoints(a, 0);
             AddInflectionPoints(b, 1);
@@ -76,7 +74,7 @@ namespace DateRanges
         }
 
         /// <summary>
-        /// Invokes the operation.
+        /// Invokes the operation for a set of DateRange values.
         /// </summary>
         /// <param name="dateRanges">A set of DateRange values.</param>
         /// <returns>A set of DateRange values.</returns>
@@ -84,7 +82,6 @@ namespace DateRanges
         internal SetOfDateRanges Invoke(SetOfDateRanges dateRanges)
         {
             if (dateRanges == null) throw new ArgumentNullException(nameof(dateRanges));
-            if (dateRanges.Count() == 0) return Enumerable.Empty<DateRange>();
 
             Init(1);
             AddInflectionPoints(dateRanges, 0);
@@ -94,7 +91,27 @@ namespace DateRanges
         }
 
         /// <summary>
-        /// Invokes the operation, treating each DateRange value as if it were part of a different set.
+        /// Invokes the operation for a DateRange value and a set of DateRange values.
+        /// </summary>
+        /// <param name="dateRange">A DateRange value.</param>
+        /// <param name="dateRanges">A set of DateRange values.</param>
+        /// <returns>A set of DateRange values.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when 'dateRanges' is null.</exception>
+        internal SetOfDateRanges Invoke(DateRange dateRange, SetOfDateRanges dateRanges)
+        {
+            if (dateRanges == null) throw new ArgumentNullException(nameof(dateRanges));
+
+            Init(2);
+            AddInflectionPoints(dateRange, 0);
+            AddInflectionPoints(dateRanges, 1);
+            inflectionPoints.Sort(InflectionPointComparer);
+            ProcessInflectionPoints();
+            return results;
+        }
+
+        /// <summary>
+        /// Invokes the operation for a set of DateRange values, treating each 
+        /// as if it were part of a different set.
         /// </summary>
         /// <param name="dateRanges">A set of DateRange values.</param>
         /// <returns>A set of DateRange values.</returns>
@@ -102,7 +119,6 @@ namespace DateRanges
         internal SetOfDateRanges InvokeAsSeparateSets(SetOfDateRanges dateRanges)
         {
             if (dateRanges == null) throw new ArgumentNullException(nameof(dateRanges));
-            if (dateRanges.Count() == 0) return Enumerable.Empty<DateRange>();
 
             Init(dateRanges.Count());
             AddInflectionPointsAsSeparateSets(dateRanges);
@@ -120,7 +136,6 @@ namespace DateRanges
         internal SetOfDateRanges Invoke(IEnumerable<SetOfDateRanges> dateRangeSets)
         {
             if (dateRangeSets == null) throw new ArgumentNullException(nameof(dateRangeSets));
-            if (dateRangeSets.Count() == 0) return Enumerable.Empty<DateRange>();
 
             Init(dateRangeSets.Count());
             AddInflectionPoints(dateRangeSets, 0);

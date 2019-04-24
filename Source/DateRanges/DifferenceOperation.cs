@@ -24,6 +24,8 @@ namespace DateRanges
 
         private int TailCount(int[] setStates)
         {
+            if (setStates.Length < 2) return 0;
+
             int sum = 0;
             for(int i = 1; i < setStates.Length; i++)
             {

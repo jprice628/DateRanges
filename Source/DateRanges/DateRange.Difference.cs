@@ -9,11 +9,12 @@ namespace DateRanges
     public partial struct DateRange
     {
         /// <summary>
-        /// Calculates the difference between two DateRange values.
+        /// Provides the difference between two DateRange values.
         /// </summary>
         /// <param name="dateRange">A DateRange value.</param>
         /// <returns>
-        /// A set of DateRange values containing each day in 'this' DateRange but not in the 'value' DateRange.
+        /// A set of DateRange values containing each day in 'this' DateRange 
+        /// but not in the given DateRange.
         /// </returns>
         public IEnumerable<DateRange> Difference(DateRange dateRange)
         {
@@ -21,91 +22,58 @@ namespace DateRanges
         }
 
         /// <summary>
-        /// Calculates the difference of all provided DateRange values.
+        /// Provides the difference between a DateRange value and a set of 
+        /// DateRange values.
         /// </summary>
         /// <param name="dateRanges">A set of DateRange values.</param>
         /// <returns>
-        /// A set of DateRange values containing each day in the first 
-        /// DateRange but not in any of the other DateRanges.
+        /// A set of DateRange values containing each day in 'this' DateRange 
+        /// but not in any of the other given DateRange values.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown when 'dateRanges' is null.
         /// </exception>
-        /// <exception cref="ArgumentException">
-        /// Thrown when 'dateRanges' contains less than two values.
-        /// </exception>
-        public static IEnumerable<DateRange> Difference(params DateRange[] dateRanges)
+        public IEnumerable<DateRange> Difference(params DateRange[] dateRanges)
         {
             if (dateRanges == null) throw new ArgumentNullException(nameof(dateRanges));
-            if (dateRanges.Count() < 2) throw new ArgumentException("'set' must contain at least two DateRange values.");
 
-            return new DifferenceOperation().InvokeAsSeparateSets(dateRanges);
+            return new DifferenceOperation().Invoke(this, dateRanges);
         }
 
         /// <summary>
-        /// Calculates the difference of all provided DateRange values.
+        /// Provides the difference between a DateRange value and a set of 
+        /// DateRange values.
         /// </summary>
         /// <param name="dateRanges">A set of DateRange values.</param>
         /// <returns>
-        /// A set of DateRange values containing each day in the first 
-        /// DateRange but not in any of the other DateRanges.
+        /// A set of DateRange values containing each day in 'this' DateRange 
+        /// but not in any of the other given DateRange values.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown when 'dateRanges' is null.
         /// </exception>
-        /// <exception cref="ArgumentException">
-        /// Thrown when 'dateRanges' contains 
-        /// less than two values.</exception>
-        public static IEnumerable<DateRange> Difference(SetOfDateRanges dateRanges)
+        public IEnumerable<DateRange> Difference(SetOfDateRanges dateRanges)
         {
             if (dateRanges == null) throw new ArgumentNullException(nameof(dateRanges));
-            if (dateRanges.Count() < 2) throw new ArgumentException("'set' must contain at least two DateRange values.");
 
-            return new DifferenceOperation().InvokeAsSeparateSets(dateRanges);
+            return new DifferenceOperation().Invoke(this, dateRanges);
         }
 
         /// <summary>
-        /// Calculates the difference between multiple sets of DateRange values.
+        /// Provides the difference between a DateRange value and a set of 
+        /// DateRange values.
         /// </summary>
-        /// <param name="dateRangeSets">Two or more sets of DateRange values.</param>
+        /// <param name="a">A set of DateRange values.</param>
+        /// <param name="b">A set of DateRange values.</param>
         /// <returns>
-        /// A set of DateRange values containing each day in the first set of 
-        /// DateRange values but not in any of the other sets.
+        /// A set of DateRange values containing each day in 'a' but not in 'b'.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when 'dateRangeSets' is null.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// Thrown when less than two sets are provided.
-        /// </exception>
-        public static IEnumerable<DateRange> Difference(params SetOfDateRanges[] dateRangeSets)
+        public static IEnumerable<DateRange> Difference(SetOfDateRanges a, SetOfDateRanges b)
         {
-            if (dateRangeSets == null) throw new ArgumentNullException(nameof(dateRangeSets));
-            if (dateRangeSets.Length < 2) throw new ArgumentException("'sets' must contain at least two sets of DateRange values.");
+            if (a == null) throw new ArgumentNullException(nameof(a));
+            if (b == null) throw new ArgumentNullException(nameof(b));
 
-            return new DifferenceOperation().Invoke(dateRangeSets);
-        }
-
-        /// <summary>
-        /// Calculates the difference between multiple sets of DateRange values.
-        /// </summary>
-        /// <param name="dateRangeSets">Two or more sets of DateRange values.</param>
-        /// <returns>
-        /// A set of DateRange values containing each day in the first set of 
-        /// DateRange values but not in any of the other sets.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when 'dateRangeSets' is null.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// Thrown when less than two sets are provided.
-        /// </exception>
-        public static IEnumerable<DateRange> Difference(IEnumerable<SetOfDateRanges> dateRangeSets)
-        {
-            if (dateRangeSets == null) throw new ArgumentNullException(nameof(dateRangeSets));
-            if (dateRangeSets.Count() < 2) throw new ArgumentException("'sets' must contain at least two sets of DateRange values.");
-
-            return new DifferenceOperation().Invoke(dateRangeSets);
+            return new DifferenceOperation().Invoke(new[] { a, b });
         }
     }
 }

@@ -37,7 +37,11 @@ namespace Sample1
 
             // Problem 1: When was the apartment in-use? This can be done by 
             // performing a union on the arrays above.
-            var inUse = DateRange.Union(jeff, john, sally, jane);
+            var inUse = DateRange.Union(jeff
+                .Concat(john)
+                .Concat(sally)
+                .Concat(jane)
+                );
             var totalDaysInUse = inUse.Sum(x => x.Length().TotalDays);
 
             Console.WriteLine("Problem 1: In-Use.");
@@ -55,10 +59,8 @@ namespace Sample1
 
             // Problem 3: When was the apartment not in use between 1/1 and 2/28?
             // This can be determined using the Difference operation.
-            var notInUse = DateRange.Difference(
-                new[] { new DateRange(Date.NewDate(2019, 1, 1), Date.NewDate(2019, 2, 28)) },
-                inUse
-                );
+            var dr0101_0228 = new DateRange(Date.NewDate(2019, 1, 1), Date.NewDate(2019, 2, 28));
+            var notInUse = dr0101_0228.Difference(inUse);
             var totalDaysNotInUse = notInUse.Sum(x => x.Length().TotalDays);
 
             Console.WriteLine("Problem 3: Not In-Use.");
