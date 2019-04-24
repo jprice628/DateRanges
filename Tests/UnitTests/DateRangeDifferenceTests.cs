@@ -222,7 +222,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void DateRange_DifferenceSingleSet()
+        public void DateRange_Difference_SingleSet()
         {
             // 1/1     2/1     3/1     4/1     5/1     6/1
             //  |-------------------------------|
@@ -253,7 +253,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void DateRange_UnionSingleSetParams()
+        public void DateRange_Union_SingleSetParams()
         {
             // 1/1     2/1     3/1     4/1     5/1     6/1
             //  |-------------------------------|
@@ -281,7 +281,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void DateRange_DifferenceMultiSet()
+        public void DateRange_Difference_MultiSet()
         {
             // 1/1 1/10  1/20 2/1         3/1  4/1    4/15        6/1     8/1
             //  |   |-----|    |-----------|    |------|           |-------|

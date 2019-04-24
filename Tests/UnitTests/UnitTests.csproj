@@ -57,6 +57,7 @@
     <Compile Include="DateTimeExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StackOperationBaseTests.cs" />
+    <Compile Include="DateRangeComplimentTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -60,8 +60,7 @@ namespace DateRanges
         }
 
         /// <summary>
-        /// Provides the difference between a DateRange value and a set of 
-        /// DateRange values.
+        /// Provides the difference between two sets of DateRange values.
         /// </summary>
         /// <param name="a">A set of DateRange values.</param>
         /// <param name="b">A set of DateRange values.</param>
