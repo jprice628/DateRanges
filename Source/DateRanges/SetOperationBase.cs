@@ -58,6 +58,24 @@ namespace DateRanges
         }
 
         /// <summary>
+        /// Invokes the operation for a pair of DateRange values.
+        /// </summary>
+        /// <param name="a">A DateRange value.</param>
+        /// <param name="b">A DateRange value.</param>
+        /// <returns>A set of DateRange values.</returns>
+        internal SetOfDateRanges Invoke(DateRange a, DateRange b)
+        {
+            if (a.IsEmpty() && b.IsEmpty()) return Enumerable.Empty<DateRange>();
+
+            Init(2);
+            AddInflectionPoints(a, 0);
+            AddInflectionPoints(b, 1);
+            inflectionPoints.Sort(InflectionPointComparer);
+            ProcessInflectionPoints();
+            return results;
+        }
+
+        /// <summary>
         /// Invokes the operation.
         /// </summary>
         /// <param name="dateRanges">A set of DateRange values.</param>
@@ -96,16 +114,16 @@ namespace DateRanges
         /// <summary>
         /// Invokes the operation.
         /// </summary>
-        /// <param name="sets">A collections of DateRange value sets.</param>
+        /// <param name="dateRangeSets">A collections of DateRange value sets.</param>
         /// <returns>A set of DateRange values.</returns>
         /// <exception cref="ArgumentNullException">Thrown when values is null.</exception>
-        internal SetOfDateRanges Invoke(IEnumerable<SetOfDateRanges> sets)
+        internal SetOfDateRanges Invoke(IEnumerable<SetOfDateRanges> dateRangeSets)
         {
-            if (sets == null) throw new ArgumentNullException(nameof(sets));
-            if (sets.Count() == 0) return Enumerable.Empty<DateRange>();
+            if (dateRangeSets == null) throw new ArgumentNullException(nameof(dateRangeSets));
+            if (dateRangeSets.Count() == 0) return Enumerable.Empty<DateRange>();
 
-            Init(sets.Count());
-            AddInflectionPoints(sets);
+            Init(dateRangeSets.Count());
+            AddInflectionPoints(dateRangeSets, 0);
             inflectionPoints.Sort(InflectionPointComparer);
             ProcessInflectionPoints();
             return results;
@@ -129,29 +147,29 @@ namespace DateRanges
             return arr;
         }
 
-        private void AddInflectionPoints(IEnumerable<SetOfDateRanges> sets)
+        private void AddInflectionPoints(IEnumerable<SetOfDateRanges> dateRangeSets, int startingSetIndex)
         {
-            int setIndex = -1;
-            foreach(var set in sets)
+            int setIndex = startingSetIndex - 1;
+            foreach (var set in dateRangeSets)
             {
                 AddInflectionPoints(set, ++setIndex);
             }
         }
 
-        private void AddInflectionPoints(SetOfDateRanges set, int setIndex)
+        private void AddInflectionPoints(SetOfDateRanges dateRanges, int setIndex)
         {
-            foreach (var dateRange in set)
+            foreach (var dateRange in dateRanges)
             {
                 AddInflectionPoints(dateRange, setIndex);
             }
         }
 
-        private void AddInflectionPoints(DateRange value, int setIndex)
+        private void AddInflectionPoints(DateRange dateRange, int setIndex)
         {
-            if (value.IsEmpty()) return;
+            if (dateRange.IsEmpty()) return;
 
-            inflectionPoints.Add(new InflectionPoint(value.StartDate, InflectionType.DateRangeStart, setIndex));
-            inflectionPoints.Add(new InflectionPoint(value.EndDate, InflectionType.DateRangeEnd, setIndex));
+            inflectionPoints.Add(new InflectionPoint(dateRange.StartDate, InflectionType.DateRangeStart, setIndex));
+            inflectionPoints.Add(new InflectionPoint(dateRange.EndDate, InflectionType.DateRangeEnd, setIndex));
         }
 
         private void AddInflectionPointsAsSeparateSets(SetOfDateRanges dateRanges)

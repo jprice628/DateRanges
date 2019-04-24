@@ -11,104 +11,104 @@ namespace DateRanges
         /// <summary>
         /// Calculates the intersection between two DateRange values.
         /// </summary>
-        /// <param name="value">A DateRange value.</param>
+        /// <param name="dateRange">A DateRange value.</param>
         /// <returns>
         /// A set of DateRange values representing the intersection of the two 
         /// DateRanges. This set could contain zero or one values.
         /// </returns>
-        public IEnumerable<DateRange> Intersect(DateRange value)
+        public IEnumerable<DateRange> Intersect(DateRange dateRange)
         {
-            return new IntersectOperation().InvokeAsSeparateSets(new[] { this, value });
+            return new IntersectOperation().Invoke(this, dateRange);
         }
 
         /// <summary>
         /// Calculates the intersection of all provided DateRange values.
         /// </summary>
-        /// <param name="set">A set of DateRange values.</ param >
+        /// <param name="dateRanges">A set of DateRange values.</ param >
         /// <returns>
         /// A set of DateRange values representing the intersection of the 
         /// provided DateRanges. This set could contain zero or one 
         /// values.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown when 'set' is null.
+        /// Thrown when 'dateRanges' is null.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// Thrown when 'set' contains less than two values.
+        /// Thrown when 'dateRanges' contains less than two values.
         /// </exception>
-        public static IEnumerable<DateRange> Intersect(params DateRange[] set)
+        public static IEnumerable<DateRange> Intersect(params DateRange[] dateRanges)
         {
-            if (set == null) throw new ArgumentNullException(nameof(set));
-            if (set.Length < 2) throw new ArgumentException("'set' must contain at least two DateRange values.");
+            if (dateRanges == null) throw new ArgumentNullException(nameof(dateRanges));
+            if (dateRanges.Length < 2) throw new ArgumentException("'set' must contain at least two DateRange values.");
 
-            return new IntersectOperation().InvokeAsSeparateSets(set);
+            return new IntersectOperation().InvokeAsSeparateSets(dateRanges);
         }
 
         /// <summary>
         /// Calculates the intersection of all provided DateRange values.
         /// </summary>
-        /// <param name="set">A set of DateRange values.</ param >
+        /// <param name="dateRanges">A set of DateRange values.</ param >
         /// <returns>
         /// A set of DateRange values representing the intersection
         /// of the provided DateRanges. This set could contain zero or one 
         /// values.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown when 'set' is null.
+        /// Thrown when 'dateRanges' is null.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// Thrown when 'set' contains less than two values.
+        /// Thrown when 'dateRanges' contains less than two values.
         /// </exception>
-        public static IEnumerable<DateRange> Intersect(SetOfDateRanges set)
+        public static IEnumerable<DateRange> Intersect(SetOfDateRanges dateRanges)
         {
-            if (set == null) throw new ArgumentNullException(nameof(set));
-            if (set.Count() < 2) throw new ArgumentException("'set' must contain at least two DateRange values.");
+            if (dateRanges == null) throw new ArgumentNullException(nameof(dateRanges));
+            if (dateRanges.Count() < 2) throw new ArgumentException("'set' must contain at least two DateRange values.");
 
-            return new IntersectOperation().InvokeAsSeparateSets(set);
+            return new IntersectOperation().InvokeAsSeparateSets(dateRanges);
         }
 
         /// <summary>
         /// Calculates the intersection between multiple sets of DateRange values.
         /// </summary>
-        /// <param name="sets">Two or more sets of DateRange values.</param>
+        /// <param name="dateRangeSets">Two or more sets of DateRange values.</param>
         /// <returns>
         /// A set of DateRange values representing the intersection between 
         /// the provided sets of DateRange values.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown when 'sets' is null.
+        /// Thrown when 'dateRangeSets' is null.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when less than two sets are provided.
         /// </exception>
-        public static IEnumerable<DateRange> Intersect(params SetOfDateRanges[] sets)
+        public static IEnumerable<DateRange> Intersect(params SetOfDateRanges[] dateRangeSets)
         {
-            if (sets == null) throw new ArgumentNullException(nameof(sets));
-            if (sets.Length < 2) throw new ArgumentException("'sets' must contain at least two sets of DateRange values.");
+            if (dateRangeSets == null) throw new ArgumentNullException(nameof(dateRangeSets));
+            if (dateRangeSets.Length < 2) throw new ArgumentException("'sets' must contain at least two sets of DateRange values.");
 
-            return new IntersectOperation().Invoke(sets);
+            return new IntersectOperation().Invoke(dateRangeSets);
         }
 
         /// <summary>
         /// Calculates the intersection between multiple sets of DateRange values.
         /// </summary>
-        /// <param name="sets">Two or more sets of DateRange values.</param>
+        /// <param name="dateRangeSets">Two or more sets of DateRange values.</param>
         /// <returns>
         /// A set of DateRange values representing the intersection between 
         /// the provided sets of DateRange values.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown when 'sets' is null.
+        /// Thrown when 'dateRangeSets' is null.
         /// </exception>
         /// <exception cref="ArgumentException">
         /// Thrown when less than two sets are provided.
         /// </exception>
-        public static IEnumerable<DateRange> Intersect(IEnumerable<SetOfDateRanges> sets)
+        public static IEnumerable<DateRange> Intersect(IEnumerable<SetOfDateRanges> dateRangeSets)
         {
-            if (sets == null) throw new ArgumentNullException(nameof(sets));
-            if (sets.Count() < 2) throw new ArgumentException("'sets' must contain at least two sets of DateRange values.");
+            if (dateRangeSets == null) throw new ArgumentNullException(nameof(dateRangeSets));
+            if (dateRangeSets.Count() < 2) throw new ArgumentException("'sets' must contain at least two sets of DateRange values.");
 
-            return new IntersectOperation().Invoke(sets);
+            return new IntersectOperation().Invoke(dateRangeSets);
         }
     }
 }

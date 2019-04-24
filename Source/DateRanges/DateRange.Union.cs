@@ -11,86 +11,86 @@ namespace DateRanges
         /// <summary>
         /// Calculates the union of two DateRange values.
         /// </summary>
-        /// <param name="value">A DateRange value.</param>
+        /// <param name="dateRange">A DateRange value.</param>
         /// <returns>
         /// A set of DateRange values representing the union of the two DateRanges. 
         /// This set could contain zero, one, or two DateRange values.
         /// </returns>
-        public IEnumerable<DateRange> Union(DateRange value)
+        public IEnumerable<DateRange> Union(DateRange dateRange)
         {
-            return new UnionOperation().Invoke(new[] { this, value });
+            return new UnionOperation().Invoke(this, dateRange);
         }
 
         /// <summary>
         /// Calculates the union of all provided DateRange values.
         /// </summary>
-        /// <param name="set">A set of DateRange values.</param>
+        /// <param name="dateRanges">A set of DateRange values.</param>
         /// <returns>
         /// A set of DateRange values representing the union of all provided values.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown when 'set' is null.
+        /// Thrown when 'dateRanges' is null.
         /// </exception>
-        public static IEnumerable<DateRange> Union(params DateRange[] set)
+        public static IEnumerable<DateRange> Union(params DateRange[] dateRanges)
         {
-            if (set == null) throw new ArgumentNullException(nameof(set));
-            if (set.Length == 0) return Enumerable.Empty<DateRange>();
+            if (dateRanges == null) throw new ArgumentNullException(nameof(dateRanges));
+            if (dateRanges.Length == 0) return Enumerable.Empty<DateRange>();
 
-            return new UnionOperation().Invoke(set);
+            return new UnionOperation().Invoke(dateRanges);
         }
 
         /// <summary>
         /// Calculates the union of all provided DateRange values.
         /// </summary>
-        /// <param name="set">A set of DateRange values.</param>
+        /// <param name="dateRanges">A set of DateRange values.</param>
         /// <returns>
         /// A set of DateRange values representing the union of all provided values.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Thrown when 'set' is null.
+        /// Thrown when 'dateRanges' is null.
         /// </exception>
-        public static IEnumerable<DateRange> Union(SetOfDateRanges set)
+        public static IEnumerable<DateRange> Union(SetOfDateRanges dateRanges)
         {
-            if (set == null) throw new ArgumentNullException(nameof(set));
-            if (set.Count() == 0) return Enumerable.Empty<DateRange>();
+            if (dateRanges == null) throw new ArgumentNullException(nameof(dateRanges));
+            if (dateRanges.Count() == 0) return Enumerable.Empty<DateRange>();
 
-            return new UnionOperation().Invoke(set);
+            return new UnionOperation().Invoke(dateRanges);
         }
 
         /// <summary>
         /// Calculates the union of all DateRange values included in multiple sets.
         /// </summary>
-        /// <param name="set">A collection of sets of DateRange values.</param>
+        /// <param name="dateRangeSets">A collection of sets of DateRange values.</param>
+        /// <returns>
+        /// A set of DateRange values representing the union of all provided values.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when 'dateRangeSets' is null.
+        /// </exception>
+        public static IEnumerable<DateRange> Union(params SetOfDateRanges[] dateRangeSets)
+        {
+            if (dateRangeSets == null) throw new ArgumentNullException(nameof(dateRangeSets));
+            if (dateRangeSets.Length == 0) return Enumerable.Empty<DateRange>();
+
+            return new UnionOperation().Invoke(dateRangeSets);
+        }
+
+        /// <summary>
+        /// Calculates the union of all DateRange values included in multiple sets.
+        /// </summary>
+        /// <param name="dateRangeSets">A collection of sets of DateRange values.</param>
         /// <returns>
         /// A set of DateRange values representing the union of all provided values.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown when 'sets' is null.
         /// </exception>
-        public static IEnumerable<DateRange> Union(params SetOfDateRanges[] sets)
+        public static IEnumerable<DateRange> Union(IEnumerable<SetOfDateRanges> dateRangeSets)
         {
-            if (sets == null) throw new ArgumentNullException(nameof(sets));
-            if (sets.Length == 0) return Enumerable.Empty<DateRange>();
+            if (dateRangeSets == null) throw new ArgumentNullException(nameof(dateRangeSets));
+            if (dateRangeSets.Count() == 0) return Enumerable.Empty<DateRange>();
 
-            return new UnionOperation().Invoke(sets);
-        }
-
-        /// <summary>
-        /// Calculates the union of all DateRange values included in multiple sets.
-        /// </summary>
-        /// <param name="set">A collection of sets of DateRange values.</param>
-        /// <returns>
-        /// A set of DateRange values representing the union of all provided values.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when 'sets' is null.
-        /// </exception>
-        public static IEnumerable<DateRange> Union(IEnumerable<SetOfDateRanges> sets)
-        {
-            if (sets == null) throw new ArgumentNullException(nameof(sets));
-            if (sets.Count() == 0) return Enumerable.Empty<DateRange>();
-
-            return new UnionOperation().Invoke(sets);
+            return new UnionOperation().Invoke(dateRangeSets);
         }
     }
 }
