@@ -129,6 +129,8 @@ namespace DateRanges
         /// </exception>
         public static bool AreEqual(DateTime a, DateTime b)
         {
+            // The .NET implementation for testing DateTime equality ignores 
+            // the value of the "Kind" property. This method does not.
             if (!IsDate(a)) throw new ArgumentException("'a' is not a date.");
             if (!IsDate(b)) throw new ArgumentException("'b' is not a date.");
 
