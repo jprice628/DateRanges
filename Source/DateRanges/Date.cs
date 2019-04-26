@@ -32,6 +32,10 @@ namespace DateRanges
         /// </summary>
         public static DateTime NewDate(int year, int month, int day)
         {
+            // This function isn't technically needed. "new DateTime(year, month, day)" 
+            // will do the same thing. It is provided to form a consistent interface 
+            // for creating date values, and because it expresses the intent on 
+            // having zero-valued time components and a DateTimeKind value of "Unspecified".
             return new DateTime(year, month, day, 0, 0, 0, DateTimeKind.Unspecified);
         }
 
