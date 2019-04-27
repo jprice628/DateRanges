@@ -221,7 +221,9 @@ var set = new[]
         Date.NewDate(2019, 2, 14))
 };
 
-// Returns 1/1/2019 to 1/15/2019 and 2/1/2019 to 2/14/2019
+// Returns
+// 1/1/2019 to 1/15/2019,
+// 2/1/2019 to 2/14/2019
 DateRange.Union(set);
 ```
 
@@ -273,6 +275,86 @@ var sally = new[]
         Date.NewDate(2019, 1, 23))
 };
 
-// Returns 1/5/2019 to 1/9/2019 and 1/20/2019 to 1/23/2019
+// Returns 
+// 1/5/2019 to 1/9/2019,
+// 1/20/2019 to 1/23/2019
 DateRange.Intersect(jane, sally);
+```
+
+## Differences
+
+Applying the difference operation to one or more DateRanges returns a new set of DateRange values that includes the dates that exist in the first DateRange but not in the others.
+
+```
+             1/1     1/5     1/10    1/15
+Input Set:    |---------------|          
+                      |---------------|  
+Result Set:   |-------|
+```
+
+```
+// Example 1 - Difference of Two DateRanges
+var dr0101_0110 = new DateRange(
+    Date.NewDate(2019, 1, 1),
+    Date.NewDate(2019, 1, 10));
+var dr0105_0115 = new DateRange(
+    Date.NewDate(2019, 1, 5),
+    Date.NewDate(2019, 1, 15));
+
+// Returns 1/1/2019 to 1/5/2019
+dr0101_0110.Difference(dr0105_0115);
+```
+
+```
+// Example 2 - Difference of a DateRange and a set of DateRanges.
+var dr0101_0201 = new DateRange(
+    Date.NewDate(2019, 1, 1),
+    Date.NewDate(2019, 2, 1));
+
+var dateRanges = new[]
+{
+    new DateRange(
+        Date.NewDate(2019, 1, 5),
+        Date.NewDate(2019, 1, 10)),
+    new DateRange(
+        Date.NewDate(2019, 1, 20),
+        Date.NewDate(2019, 1, 25)),
+};
+
+// Returns
+// 2019-01-01 to 2019-01-05,
+// 2019-01-10 to 2019-01-20,
+// 2019-01-25 to 2019-02-01
+dr0101_0110.Difference(dateRanges);
+```
+
+The operation can also be performed on sets of DateRange values. Using the previous example where two collegues share an apartment, the difference operation could be used to identify DateRanges where a collegue occupied the apartment by herself.
+
+```
+// Example 3 - Difference of Two DateRange Sets.
+var jane = new[]
+{
+    new DateRange(
+        Date.NewDate(2019, 1, 1),
+        Date.NewDate(2019, 1, 10)),
+    new DateRange(
+        Date.NewDate(2019, 1, 20),
+        Date.NewDate(2019, 2, 1))
+};
+
+var sally = new[]
+{
+    new DateRange(
+        Date.NewDate(2019, 1, 5),
+        Date.NewDate(2019, 1, 9)),
+    new DateRange(
+        Date.NewDate(2019, 1, 15),
+        Date.NewDate(2019, 1, 23))
+};
+
+// Returns
+// 2019-01-01 to 2019-01-05
+// 2019-01-09 to 2019-01-10
+// 2019-01-23 to 2019-02-01
+DateRange.Difference(jane, sally);
 ```
