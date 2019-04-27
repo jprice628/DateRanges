@@ -140,7 +140,7 @@ var dateRange = new DateRange(
     Date.NewDate(2019, 6, 23));
 ```
 
-For convinience the following two functions have been provided for creating common DateRange values:
+For convenience the following two functions have been provided for creating common DateRange values:
 - `DateRange.Full()` - an alias for `new DateRange(Date.MinValue, Date.MaxValue)`
 - `DateRange.Empty()` - an alias for `new DateRange(Date.MinValue, Date.MinValue)`
 
@@ -251,7 +251,7 @@ var dr0105_0115 = new DateRange(
 dr0101_0110.Intersect(dr0105_0115);
 ```
 
-The operation can also be performed on sets of DateRange values. For example, imagine a situation where two collegues travel frequently to the same city. They decide that it would be more economical to lease and share an apartment. Each collegue's stays could be represented as a set of DateRange values, and the intersection would represent the dates that they occupied the apartment together.
+The operation can also be performed on sets of DateRange values. For example, imagine a situation where two colleagues travel frequently to the same city. They decide that it would be more economical to lease and share an apartment. Each colleague's stays could be represented as a set of DateRange values, and the intersection would represent the dates that they occupied the apartment together.
 
 ```
 // Example 2 - Intersection of Two DateRange Sets.
@@ -328,7 +328,7 @@ var dateRanges = new[]
 dr0101_0110.Difference(dateRanges);
 ```
 
-The operation can also be performed on sets of DateRange values. Using the previous example where two collegues share an apartment, the difference operation could be used to identify DateRanges where a collegue occupied the apartment by herself.
+The operation can also be performed on sets of DateRange values. Using the previous example where two colleagues share an apartment, the difference operation could be used to identify DateRanges where a colleague occupied the apartment by herself.
 
 ```
 // Example 3 - Difference of Two DateRange Sets.
@@ -399,3 +399,71 @@ var dateRanges = new[]
 // 2019-01-20 to 9999-12-31
 DateRange.Compliment(dateRanges);
 ```
+
+## Stacking
+
+Sometimes it is useful to take a collection of things that have DateRange properties and group them according to the DateRanges that they occupy. Continuing with the previous example of the two colleagues, performing the stacking operation would provide us with a set of DateRanges where the apartment was occupied, and it would tell us who occupied the apartment at that time.
+
+Lets begin with the data from the previous examples:
+```
+var jane = new[]
+{
+    new DateRange(
+        Date.NewDate(2019, 1, 1),
+        Date.NewDate(2019, 1, 10)),
+    new DateRange(
+        Date.NewDate(2019, 1, 20),
+        Date.NewDate(2019, 2, 1))
+};
+
+var sally = new[]
+{
+    new DateRange(
+        Date.NewDate(2019, 1, 5),
+        Date.NewDate(2019, 1, 9)),
+    new DateRange(
+        Date.NewDate(2019, 1, 15),
+        Date.NewDate(2019, 1, 23))
+};
+```
+
+The stacking operation is intended for objects that have DateRange properties, not for sets of DateRanges. For this example, we'll map the DateRanges above to a set of tuples.
+
+```
+var tuples = jane.Select(x => new Tuple<string, DateRange>("Jane", x))
+    .Concat(sally.Select(x => new Tuple<string, DateRange>("Sally", x)));
+```
+
+Now, we need to create an implementation of the stack operation for the type of object that we are stacking.
+
+```
+class ColleagueStacker : StackOperationBase<Tuple<string, DateRange>>
+{
+    protected override DateRange DateRangeForItem(Tuple<string, DateRange> item) => item.Item2;
+}
+```
+
+Then create an instance of the `ColleagueStacker` class an invoke the operation.
+
+>*CAUTION*: classes derived from the `StackOperationBase` class are not thread safe. They are intended to represent a single invocation of an operation. It is best to instantiate them, invoke them, and throw them away.
+
+```
+new ColleagueStacker().Invoke(tuples);
+```
+
+The results of stacking the colleagues are as follows:
+
+- 2019-01-01 to 2019-01-05
+  - Jane  
+- 2019-01-05 to 2019-01-09
+  - Jane
+  - Sally  
+- 2019-01-09 to 2019-01-10
+  - Jane  
+- 2019-01-15 to 2019-01-20
+  - Sally  
+- 2019-01-20 to 2019-01-23
+  - Sally
+  - Jane  
+- 2019-01-23 to 2019-02-01
+  - Jane
