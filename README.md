@@ -358,3 +358,44 @@ var sally = new[]
 // 2019-01-23 to 2019-02-01
 DateRange.Difference(jane, sally);
 ```
+
+## Compliments
+
+Applying the compliment operation to one or more DateRanges returns a new set of DateRange values that includes dates that do not exist in any of the input DateRanges.
+
+```
+             1/1     1/5     1/10     1/15   1/20     1/30
+Input Set:            |-------|        |------|
+Result Set:   <-------|       |--------|      |-------->
+```
+
+```
+// Example 1 - The Compliment of a Single DateRange.
+var dr0101_0201 = new DateRange(
+    Date.NewDate(2019, 1, 1),
+    Date.NewDate(2019, 2, 1));
+
+// Returns 
+// 0001-01-01 to 2019-01-01,
+// 2019-02-01 to 9999-12-31
+dr0101_0201.Compliment();
+```
+
+```
+// Example 2 - The Compliment of a set of DateRanges.
+var dateRanges = new[]
+{
+    new DateRange(
+        Date.NewDate(2019, 1, 5),
+        Date.NewDate(2019, 1, 10)),
+    new DateRange(
+        Date.NewDate(2019, 1, 15),
+        Date.NewDate(2019, 1, 20))
+};
+
+// Returns
+// 0001-01-01 to 2019-01-05,
+// 2019-01-10 to 2019-01-15,
+// 2019-01-20 to 9999-12-31
+DateRange.Compliment(dateRanges);
+```
